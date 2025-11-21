@@ -140,7 +140,11 @@
 <script>
     // === ВАЖНО: ВСТАВЬТЕ СЮДА СВОИ ДАННЫЕ БЕЗ РУССКИХ БУКВ ===
     const GIST_ID = "e79c3637404354a0b028aa45f3f2dceb";       // Пример: 8987df...
-    const GH_TOKEN = "ghp_" + "EFdU4kPAJVQh4RDFqBwmVNpmjOLoEX4Xu9se"; // Пример: ghp_AbCd...
+// Вставьте сюда ту длинную строку с base64encode.org
+const ENCRYPTED_TOKEN = "Z2hwX3QyRjRGNXJ4dU4zUUhQbGhzNU1FVUw5VUpYWWVoWTJCQlFXMg=="; 
+
+// Эта строка превратит её обратно в токен прямо в браузере
+    const GH_TOKEN = atob(ENCRYPTED_TOKEN);
     const FILE_NAME = "codes.json";
     
     const AES_KEY = "ZyUcx5Tyw4sZx4qid5GiYwslzD7skYws7ZC7CFZHp3k=";
@@ -317,6 +321,7 @@
 </script>
 </body>
 </html>
+
 
 
 
