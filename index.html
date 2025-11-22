@@ -653,6 +653,36 @@
             border-color: rgba(139, 182, 219, 0.4);
             transform: translateY(-2px);
         }
+
+        .btn-install {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(139, 182, 219, 0.15) 0%, rgba(139, 182, 219, 0.08) 100%);
+            color: #8bb6db;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(139, 182, 219, 0.2);
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+        }
+
+        .btn-install:hover {
+            background: linear-gradient(135deg, rgba(139, 182, 219, 0.25) 0%, rgba(139, 182, 219, 0.15) 100%);
+            border-color: rgba(139, 182, 219, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(139, 182, 219, 0.2);
+        }
+
+        .btn-install:active {
+            transform: scale(0.98);
+        }
     </style>
 </head>
 <body>
@@ -719,23 +749,18 @@
 
         <div id="tab-settings" class="tab-content">
             <h2 style="margin-bottom: 25px;">НАСТРОЙКИ</h2>
-            
-            <div class="settings-section">
-                <h3><i class="fas fa-folder-open"></i> Путь к игре</h3>
-                <div class="setting-item">
-                    <label>Папка установки World of Tanks Blitz:</label>
-                    <input type="text" id="game-path-input" readonly placeholder="Папка не выбрана">
-                    <button class="btn-browse" onclick="browseGamePath()">
-                        <i class="fas fa-folder-open"></i> Выбрать папку
-                    </button>
-                </div>
-            </div>
 
             <div class="settings-section">
-                <h3><i class="fab fa-github"></i> Репозиторий модов</h3>
+                <h3><i class="fas fa-download"></i> Установка модов</h3>
                 <div class="setting-item">
-                    <label>GitHub репозиторий:</label>
-                    <input type="text" id="repo-input" value="asstrallity-ui/Tanks_Blitz_Mods_Files" readonly>
+                    <button class="btn-install" onclick="installSDLS()">
+                        <i class="fas fa-folder"></i> sDLS - Установка мода в /Documents/packs
+                    </button>
+                </div>
+                <div class="setting-item">
+                    <button class="btn-install" onclick="installNSDLS()">
+                        <i class="fas fa-cube"></i> n-sDLS - Установка в /Data/tanksblitz.exe
+                    </button>
                 </div>
             </div>
         </div>
@@ -974,6 +999,14 @@
 
         function updateGameStatus(found, path) {
             updateConnectionStatus(found, path);
+        }
+
+        function installSDLS() {
+            console.log('INSTALL_SDLS');
+        }
+
+        function installNSDLS() {
+            console.log('INSTALL_NSDLS');
         }
 
         loadMods();
