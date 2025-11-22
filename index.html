@@ -23,21 +23,14 @@
             user-select: none;
         }
 
-        /* Плавный снег */
-
-        .snow-layer {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
-
+        /* Плавные снежинки (как оверлей в секциях) */
         .snowflake {
             position: absolute;
-            color: rgba(139, 182, 219, 0.28);
+            color: rgba(139, 182, 219, 0.35);
             font-size: 10px;
             animation: snowfall linear infinite;
+            pointer-events: none;
+            z-index: 0;
         }
 
         @keyframes snowfall {
@@ -46,13 +39,13 @@
                 opacity: 0;
             }
             10% {
-                opacity: 0.35;
+                opacity: 0.5;
             }
             90% {
-                opacity: 0.35;
+                opacity: 0.5;
             }
             100% {
-                transform: translateY(100vh) translateX(25px);
+                transform: translateY(100vh) translateX(20px);
                 opacity: 0;
             }
         }
@@ -352,7 +345,7 @@
             font-size: 14px;
         }
 
-        /* Новый дизайн методов установки: два плоских переключателя */
+        /* Методы установки — таблетки */
 
         .install-methods {
             display: flex;
@@ -401,7 +394,7 @@
             color: #a0b0c0;
         }
 
-        /* Информация — простое окно */
+        /* Информация */
 
         .info-section {
             background: rgba(21, 26, 33, 0.86);
@@ -700,21 +693,12 @@
     </style>
 </head>
 <body>
-<!-- Снег поверх всего сайта -->
-<div class="snow-layer">
-    <div class="snowflake" style="left: 5%;  animation-duration: 20s; animation-delay: 0s;">✶</div>
-    <div class="snowflake" style="left: 15%; animation-duration: 24s; animation-delay: 2s;">✻</div>
-    <div class="snowflake" style="left: 25%; animation-duration: 22s; animation-delay: 4s;">✼</div>
-    <div class="snowflake" style="left: 35%; animation-duration: 26s; animation-delay: 1s;">✶</div>
-    <div class="snowflake" style="left: 45%; animation-duration: 21s; animation-delay: 3s;">✻</div>
-    <div class="snowflake" style="left: 55%; animation-duration: 25s; animation-delay: 5s;">✼</div>
-    <div class="snowflake" style="left: 65%; animation-duration: 23s; animation-delay: 6s;">✶</div>
-    <div class="snowflake" style="left: 75%; animation-duration: 27s; animation-delay: 2s;">✻</div>
-    <div class="snowflake" style="left: 85%; animation-duration: 22s; animation-delay: 7s;">✼</div>
-    <div class="snowflake" style="left: 95%; animation-duration: 24s; animation-delay: 4s;">✶</div>
-</div>
-
 <div class="sidebar">
+    <!-- Снежинки в сайдбаре -->
+    <div class="snowflake" style="left: 10%; top: -5%; animation-duration: 16s; animation-delay: 0s;">*</div>
+    <div class="snowflake" style="left: 40%; top: -10%; animation-duration: 18s; animation-delay: 3s;">*</div>
+    <div class="snowflake" style="left: 70%; top: -15%; animation-duration: 20s; animation-delay: 6s;">*</div>
+
     <div class="logo">
         <i class="fas fa-cube"></i>
         ASSTRALLITY
@@ -746,6 +730,13 @@
 </div>
 
 <div class="content">
+    <!-- Снежинки по фону контента -->
+    <div class="snowflake" style="left: 15%; top: -8%; animation-duration: 22s; animation-delay: 1s;">*</div>
+    <div class="snowflake" style="left: 35%; top: -12%; animation-duration: 24s; animation-delay: 4s;">*</div>
+    <div class="snowflake" style="left: 55%; top: -18%; animation-duration: 20s; animation-delay: 2s;">*</div>
+    <div class="snowflake" style="left: 75%; top: -10%; animation-duration: 26s; animation-delay: 5s;">*</div>
+    <div class="snowflake" style="left: 90%; top: -5%; animation-duration: 23s; animation-delay: 7s;">*</div>
+
     <!-- Моды -->
     <div id="tab-mods" class="tab-content active">
         <div class="content-header">
