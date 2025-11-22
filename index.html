@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asstrallity Loader</title>
     
-    <script src="https://cdn.jsdelivr.net/npm/qwebchannel@1.0.0/qwebchannel.js"></script>
-    
     <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #0f0f0f;
+            --border: #1a1a1a;
+            --text: #ffffff;
+            --text-secondary: #808080;
+            --accent: #ffffff;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,25 +22,23 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             overflow: hidden;
             height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Верхняя панель с логотипом и табами */
         .top-bar {
-            background: #0f0f0f;
-            border-bottom: 1px solid #1a1a1a;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
             padding: 0 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             height: 64px;
-            z-index: 100;
         }
 
         .logo {
@@ -41,7 +46,6 @@
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #ffffff;
         }
 
         .tabs {
@@ -54,7 +58,7 @@
             background: transparent;
             border: none;
             border-radius: 20px;
-            color: #808080;
+            color: var(--text-secondary);
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -62,16 +66,15 @@
         }
 
         .tab:hover {
-            background: #1a1a1a;
-            color: #ffffff;
+            background: var(--border);
+            color: var(--text);
         }
 
         .tab.active {
-            background: #ffffff;
-            color: #0a0a0a;
+            background: var(--accent);
+            color: var(--bg);
         }
 
-        /* Основная область контента */
         .content {
             flex: 1;
             overflow-y: auto;
@@ -83,7 +86,7 @@
         }
 
         .content::-webkit-scrollbar-track {
-            background: #0a0a0a;
+            background: var(--bg);
         }
 
         .content::-webkit-scrollbar-thumb {
@@ -91,11 +94,6 @@
             border-radius: 4px;
         }
 
-        .content::-webkit-scrollbar-thumb:hover {
-            background: #3a3a3a;
-        }
-
-        /* Вкладки контента */
         .tab-content {
             display: none;
             max-width: 1400px;
@@ -108,43 +106,30 @@
         }
 
         @keyframes fadeIn {
-            from { 
-                opacity: 0; 
-                transform: translateY(12px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Загрузка */
         .loading {
             text-align: center;
             padding: 120px 20px;
-            color: #808080;
-        }
-
-        .loading-text {
-            font-size: 15px;
-            margin-top: 20px;
+            color: var(--text-secondary);
         }
 
         .spinner {
             width: 32px;
             height: 32px;
-            border: 3px solid #1a1a1a;
-            border-top-color: #ffffff;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin: 0 auto;
+            margin: 0 auto 20px;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        /* Сетка модов */
         .mods-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -152,12 +137,11 @@
         }
 
         .mod-card {
-            background: #0f0f0f;
-            border: 1px solid #1a1a1a;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
 
         .mod-card:hover {
@@ -170,7 +154,7 @@
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            background: linear-gradient(135deg, var(--border) 0%, var(--surface) 100%);
         }
 
         .mod-info {
@@ -181,12 +165,11 @@
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 8px;
-            color: #ffffff;
         }
 
         .mod-description {
             font-size: 14px;
-            color: #808080;
+            color: var(--text-secondary);
             line-height: 1.5;
             margin-bottom: 16px;
         }
@@ -194,7 +177,6 @@
         .mod-meta {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             font-size: 12px;
             color: #606060;
             margin-bottom: 16px;
@@ -203,8 +185,8 @@
         .install-btn {
             width: 100%;
             padding: 12px;
-            background: #ffffff;
-            color: #0a0a0a;
+            background: var(--accent);
+            color: var(--bg);
             border: none;
             border-radius: 12px;
             font-size: 14px;
@@ -218,31 +200,15 @@
             transform: scale(1.02);
         }
 
-        .install-btn:active {
-            transform: scale(0.98);
-        }
-
         .install-btn:disabled {
-            background: #1a1a1a;
+            background: var(--border);
             color: #606060;
             cursor: not-allowed;
-            transform: none;
         }
 
-        .install-btn.installing {
-            background: #ffa500;
-            color: #0a0a0a;
-        }
-
-        .install-btn.installed {
-            background: #4caf50;
-            color: #ffffff;
-        }
-
-        /* Настройки */
         .settings-section {
-            background: #0f0f0f;
-            border: 1px solid #1a1a1a;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 24px;
@@ -250,19 +216,13 @@
 
         .settings-section h2 {
             font-size: 20px;
-            font-weight: 600;
             margin-bottom: 20px;
-            color: #ffffff;
-        }
-
-        .setting-item {
-            margin-bottom: 24px;
         }
 
         .setting-label {
             display: block;
             font-size: 13px;
-            color: #808080;
+            color: var(--text-secondary);
             margin-bottom: 8px;
             font-weight: 500;
         }
@@ -275,45 +235,33 @@
         .setting-input {
             flex: 1;
             padding: 12px 16px;
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
+            background: var(--bg);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            color: #ffffff;
+            color: var(--text);
             font-size: 14px;
             outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .setting-input:focus {
-            border-color: #3a3a3a;
         }
 
         .setting-btn {
             padding: 12px 24px;
-            background: #1a1a1a;
-            color: #ffffff;
+            background: var(--border);
+            color: var(--text);
             border: 1px solid #2a2a2a;
             border-radius: 12px;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
-            white-space: nowrap;
         }
 
         .setting-btn:hover {
             background: #2a2a2a;
-            border-color: #3a3a3a;
         }
 
-        .setting-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Информация */
         .info-section {
-            background: #0f0f0f;
-            border: 1px solid #1a1a1a;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 24px;
@@ -321,82 +269,42 @@
 
         .info-section h2 {
             font-size: 20px;
-            font-weight: 600;
             margin-bottom: 12px;
-            color: #ffffff;
         }
 
         .info-section p {
             font-size: 14px;
-            color: #808080;
+            color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 8px;
         }
 
-        .info-section a {
-            color: #ffffff;
-            text-decoration: none;
-            border-bottom: 1px solid #3a3a3a;
-            transition: border-color 0.2s ease;
-        }
-
-        .info-section a:hover {
-            border-color: #ffffff;
-        }
-
-        /* Уведомления */
         .notification {
             position: fixed;
             top: 24px;
             right: 24px;
             padding: 16px 24px;
-            background: #0f0f0f;
-            border: 1px solid #1a1a1a;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            color: #ffffff;
             font-size: 14px;
             font-weight: 500;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
             animation: slideIn 0.3s ease;
             z-index: 1000;
-            max-width: 400px;
         }
 
         @keyframes slideIn {
-            from { 
-                transform: translateX(100%); 
-                opacity: 0; 
-            }
-            to { 
-                transform: translateX(0); 
-                opacity: 1; 
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .notification.info { border-left: 3px solid #2196F3; }
         .notification.success { border-left: 3px solid #4CAF50; }
         .notification.error { border-left: 3px solid #F44336; }
-
-        /* Пустое состояние */
-        .empty-state {
-            text-align: center;
-            padding: 80px 20px;
-            color: #606060;
-        }
-
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        .empty-state-text {
-            font-size: 15px;
-        }
     </style>
 </head>
 <body>
-    <!-- Верхняя панель -->
     <div class="top-bar">
         <div class="logo">ASSTRALLITY</div>
         <div class="tabs">
@@ -405,22 +313,19 @@
         </div>
     </div>
 
-    <!-- Контент -->
     <div class="content">
-        <!-- Вкладка: Моды -->
         <div class="tab-content active" id="mods-tab">
             <div class="loading">
                 <div class="spinner"></div>
-                <div class="loading-text">Загрузка списка модов...</div>
+                <div>Загрузка списка модов...</div>
             </div>
             <div class="mods-grid" id="mods-container"></div>
         </div>
 
-        <!-- Вкладка: Настройки -->
         <div class="tab-content" id="settings-tab">
             <div class="settings-section">
                 <h2>Путь установки</h2>
-                <div class="setting-item">
+                <div>
                     <label class="setting-label">Папка для установки модов</label>
                     <div class="setting-row">
                         <input type="text" class="setting-input" id="path-display" readonly placeholder="Не выбрано">
@@ -434,7 +339,7 @@
                 <p><strong>Asstrallity Loader</strong> — современный менеджер модов</p>
                 <p>Версия: 1.0.0</p>
                 <p>Разработчик: asstrallity-ui</p>
-                <p>GitHub: <a href="https://github.com/asstrallity-ui/mods" target="_blank">asstrallity-ui/mods</a></p>
+                <p>GitHub: <a href="https://github.com/asstrallity-ui/mods" style="color: #fff;">asstrallity-ui/mods</a></p>
             </div>
         </div>
     </div>
@@ -442,22 +347,38 @@
     <script>
         const MODS_JSON_URL = 'https://raw.githubusercontent.com/asstrallity-ui/mods/main/mods.json';
         let backend = null;
-        let modsData = [];
+        let isInApp = false;
 
-        // Инициализация WebChannel
+        // Проверяем, работаем ли мы внутри PyQt6
+        function checkIfInApp() {
+            return typeof qt !== 'undefined' && qt.webChannelTransport;
+        }
+
+        // Инициализация WebChannel (только в PyQt6)
         function initializeBackend() {
-            if (typeof qt !== 'undefined' && qt.webChannelTransport) {
+            isInApp = checkIfInApp();
+            
+            if (isInApp) {
+                console.log("✓ Обнаружен Qt WebChannel");
+                
+                // Ждем загрузки qwebchannel.js
+                if (typeof QWebChannel === 'undefined') {
+                    console.log("⏳ Ожидание загрузки QWebChannel...");
+                    setTimeout(initializeBackend, 100);
+                    return;
+                }
+                
                 try {
                     new QWebChannel(qt.webChannelTransport, function(channel) {
                         backend = channel.objects.py_backend;
-                        console.log("✅ Backend подключен");
+                        console.log("✓ Backend подключен!");
 
                         // Получаем путь
                         backend.getGamePath(function(path) {
-                            document.getElementById('path-display').value = path || 'Не выбрано';
+                            updatePathDisplay(path);
                         });
 
-                        // Сигналы
+                        // Слушаем сигналы
                         backend.installStarted.connect(function(filename) {
                             showNotification('Установка мода...', 'info');
                         });
@@ -468,20 +389,33 @@
                             } else {
                                 showNotification('✗ ' + message, 'error');
                             }
-                            resetInstallButtons();
                         });
 
                         backend.pathChanged.connect(function(newPath) {
-                            document.getElementById('path-display').value = newPath;
+                            updatePathDisplay(newPath);
                             showNotification('Путь изменен', 'info');
+                        });
+
+                        backend.searchProgress.connect(function(message) {
+                            console.log('Поиск: ' + message);
                         });
                     });
                 } catch(e) {
-                    console.error("Ошибка WebChannel:", e);
+                    console.error("Ошибка инициализации WebChannel:", e);
+                    document.getElementById('path-display').value = 'Ошибка подключения';
                 }
             } else {
-                console.log("⚠️ Режим предпросмотра");
+                console.log("⚠ Режим предпросмотра (браузер)");
                 document.getElementById('path-display').value = 'Режим предпросмотра';
+            }
+        }
+
+        // Обновление отображения пути
+        function updatePathDisplay(path) {
+            const input = document.getElementById('path-display');
+            if (input) {
+                input.value = path || 'Не выбрано';
+                console.log('✓ Путь обновлен:', path);
             }
         }
 
@@ -490,19 +424,10 @@
             try {
                 const response = await fetch(MODS_JSON_URL);
                 const data = await response.json();
-                modsData = data.mods;
-                displayMods(modsData);
+                displayMods(data.mods);
             } catch (error) {
                 console.error('Ошибка загрузки:', error);
-                const loading = document.querySelector('.loading');
-                if (loading) {
-                    loading.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-state-icon">⚠️</div>
-                            <div class="empty-state-text">Ошибка загрузки списка модов</div>
-                        </div>
-                    `;
-                }
+                document.querySelector('.loading').innerHTML = '<div style="color: #808080;">Ошибка загрузки списка модов</div>';
             }
         }
 
@@ -513,13 +438,8 @@
             
             if (loading) loading.style.display = 'none';
 
-            if (mods.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📦</div>
-                        <div class="empty-state-text">Нет доступных модов</div>
-                    </div>
-                `;
+            if (!mods || mods.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #808080; padding: 80px;">Нет доступных модов</div>';
                 return;
             }
 
@@ -547,19 +467,11 @@
         // Установка мода
         function installMod(filename) {
             if (backend) {
+                console.log('Установка:', filename);
                 backend.installMod(filename);
             } else {
-                showNotification('Backend недоступен', 'error');
+                showNotification('⚠ Backend недоступен (откройте в приложении)', 'error');
             }
-        }
-
-        // Сброс кнопок
-        function resetInstallButtons() {
-            document.querySelectorAll('.install-btn').forEach(btn => {
-                btn.disabled = false;
-                btn.textContent = 'Установить';
-                btn.classList.remove('installing', 'installed');
-            });
         }
 
         // Уведомления
@@ -569,10 +481,7 @@
             notification.textContent = message;
             document.body.appendChild(notification);
 
-            setTimeout(() => {
-                notification.style.animation = 'slideIn 0.3s ease reverse';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
+            setTimeout(() => notification.remove(), 3000);
         }
 
         // Переключение табов
@@ -588,17 +497,18 @@
             });
         });
 
-        // Изменение пути
+        // Кнопка изменения пути
         document.getElementById('change-path-btn').addEventListener('click', function() {
             if (backend) {
                 backend.openFolderDialog();
             } else {
-                showNotification('Backend недоступен', 'error');
+                showNotification('⚠ Доступно только в приложении', 'error');
             }
         });
 
-        // Инициализация
+        // Инициализация при загрузке
         window.addEventListener('DOMContentLoaded', function() {
+            console.log('Страница загружена');
             initializeBackend();
             loadMods();
         });
