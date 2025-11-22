@@ -450,13 +450,8 @@
             font-weight: 500;
         }
 
-        .status-text.connected {
-            color: #8bb6db;
-        }
-
-        .status-text.disconnected {
-            color: #ff6b6b;
-        }
+        .status-text.connected { color: #8bb6db; }
+        .status-text.disconnected { color: #ff6b6b; }
 
         .status-pulse.disconnected {
             background: #ff6b6b;
@@ -477,7 +472,7 @@
             border: 1px solid rgba(255, 107, 107, 0.2);
         }
 
-        /* Модалка установки модов (как было) */
+        /* Модалка установки модов */
 
         .modal-overlay {
             position: fixed;
@@ -622,16 +617,12 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        .status-message.show {
-            display: flex;
-        }
-
+        .status-message.show { display: flex; }
         .status-message.success {
             background: rgba(74, 158, 255, 0.15);
             border: 1px solid rgba(74, 158, 255, 0.3);
             color: #4a9eff;
         }
-
         .status-message.error {
             background: rgba(255, 107, 107, 0.15);
             border: 1px solid rgba(255, 107, 107, 0.3);
@@ -669,18 +660,17 @@
 
         #game-path-input { display: none; }
 
-        /* Тост обновления лаунчера */
+        /* Модальное окно обновления в правом нижнем углу */
 
         #updateToast {
             position: fixed;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
+            right: 26px;
+            bottom: 26px;
             width: 420px;
-            max-width: 90%;
-            background: rgba(21, 26, 33, 0.96);
-            border-radius: 14px;
-            border: 1px solid rgba(139, 182, 219, 0.35);
+            max-width: 34%;
+            background: rgba(21, 26, 33, 0.97);
+            border-radius: 16px;
+            border: 1px solid rgba(139, 182, 219, 0.4);
             box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85);
             padding: 18px 20px 16px;
             display: none;
@@ -689,12 +679,18 @@
 
         #updateToast.show {
             display: block;
-            animation: fadeInUp 0.25s ease-out;
+            animation: fadeInUpRight 0.25s ease-out;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translate(-50%, 10px); }
-            to   { opacity: 1; transform: translate(-50%, 0); }
+        @keyframes fadeInUpRight {
+            from {
+                opacity: 0;
+                transform: translate(10px, 10px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
         }
 
         .update-toast-header {
@@ -900,7 +896,7 @@
     </div>
 </div>
 
-<!-- Тост обновления лаунчера -->
+<!-- Модальное окно обновления лаунчера в правом нижнем углу -->
 <div id="updateToast">
     <div class="update-toast-header">
         <div class="update-toast-title">
@@ -990,7 +986,7 @@
         statusMsg.querySelector("i").className = "fas fa-exclamation-circle";
     }
 
-    // Тост обновления лаунчера (ТЕСТ)
+    // Модальное окно обновления в углу
 
     function showUpdateToast() {
         const toast = document.getElementById("updateToast");
@@ -1008,7 +1004,7 @@
         document.getElementById("updateToast").classList.remove("show");
     }
 
-    // percent: 0..100, message: текст (может быть с \n), speedText: строка
+    // percent: 0..100, message: текст, speedText: строка скорости
     function updateUpdateProgress(percent, message, speedText) {
         document.getElementById("updateProgressBar").style.width = percent + "%";
         document.getElementById("updateProgressText").textContent = percent + "%";
@@ -1030,7 +1026,8 @@
         st.style.display = "block";
     }
 
-    // загрузка модов / статусы / installMethod — без изменений
+    // Загрузка модов / статусы
+
     function refreshMods() {
         if (isRefreshing) return;
         isRefreshing = true;
