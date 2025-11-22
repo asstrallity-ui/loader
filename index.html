@@ -115,6 +115,50 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* HEADER С КНОПКОЙ ОБНОВЛЕНИЯ */
+        .content-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .refresh-btn {
+            padding: 10px 20px;
+            background: #1e1e1e;
+            border: 1px solid #2d2d2d;
+            border-radius: 8px;
+            color: #b0b0b0;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+        }
+
+        .refresh-btn:hover {
+            background: #252525;
+            border-color: #3d3d3d;
+            color: #ffffff;
+        }
+
+        .refresh-btn i {
+            font-size: 14px;
+            transition: transform 0.6s;
+        }
+
+        .refresh-btn.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
         
         .mod-grid { 
             display: grid; 
@@ -283,7 +327,6 @@
             margin-bottom: 15px;
         }
 
-        /* ОБНОВЛЕННЫЙ СТАТУС-БОКС */
         .status-box { 
             margin-top: auto; 
             padding: 18px 15px;
@@ -379,7 +422,7 @@
         
         h2 {
             font-family: 'Rajdhani', sans-serif; 
-            margin-bottom: 25px;
+            margin: 0;
             color: #ffffff;
             font-size: 32px;
             font-weight: 700;
@@ -611,7 +654,6 @@
             </button>
         </div>
 
-        <!-- ОБНОВЛЕННЫЙ СТАТУС-БОКС -->
         <div class="status-box">
             <div class="status-item">
                 <div class="status-icon">
@@ -639,14 +681,20 @@
 
     <div class="content">
         <div id="tab-mods" class="tab-content active">
-            <h2>ДОСТУПНЫЕ МОДЫ</h2>
+            <div class="content-header">
+                <h2>ДОСТУПНЫЕ МОДЫ</h2>
+                <button class="refresh-btn" onclick="refreshMods()" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i>
+                    Обновить
+                </button>
+            </div>
             <div id="grid" class="mod-grid">
                 <div class="loading">Загрузка списка с GitHub...</div>
             </div>
         </div>
 
         <div id="tab-settings" class="tab-content">
-            <h2>НАСТРОЙКИ</h2>
+            <h2 style="margin-bottom: 25px;">НАСТРОЙКИ</h2>
             
             <div class="settings-section">
                 <h3><i class="fas fa-folder-open"></i> Путь к игре</h3>
@@ -669,7 +717,7 @@
         </div>
 
         <div id="tab-info" class="tab-content">
-            <h2>ИНФОРМАЦИЯ</h2>
+            <h2 style="margin-bottom: 25px;">ИНФОРМАЦИЯ</h2>
             
             <div class="info-section">
                 <h3>О программе</h3>
@@ -724,6 +772,8 @@
         const BRANCH = "main";
         const REPO_ROOT = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/`;
         const MODS_JSON = REPO_ROOT + "mods.json";
+
+        let isRefreshing = false;
 
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => {
@@ -785,28 +835,51 @@
             icon.className = 'fas fa-exclamation-circle';
         }
 
-        fetch(MODS_JSON)
-            .then(res => {
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                return res.json();
-            })
-            .then(data => {
-                console.log('JSON загружен:', data);
-                var modsArray = Array.isArray(data) ? data : (data.mods || []);
-                if (modsArray.length > 0) {
-                    renderMods(modsArray);
-                } else {
-                    throw new Error('Моды не найдены в JSON');
-                }
-            })
-            .catch(err => {
-                console.error('Ошибка:', err);
-                document.getElementById('grid').innerHTML = 
-                    `<div class="error">
-                        <i class="fas fa-exclamation-triangle"></i> 
-                        Ошибка загрузки: ${err.message}
-                    </div>`;
-            });
+        // ОБНОВЛЕНИЕ МОДОВ
+        function refreshMods() {
+            if (isRefreshing) return;
+            
+            isRefreshing = true;
+            var refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.classList.add('loading');
+            refreshBtn.disabled = true;
+            
+            console.log('REFRESH_MODS');
+            
+            loadMods();
+        }
+
+        // ЗАГРУЗКА МОДОВ
+        function loadMods() {
+            fetch(MODS_JSON + '?t=' + Date.now())
+                .then(res => {
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    return res.json();
+                })
+                .then(data => {
+                    console.log('JSON загружен:', data);
+                    var modsArray = Array.isArray(data) ? data : (data.mods || []);
+                    if (modsArray.length > 0) {
+                        renderMods(modsArray);
+                    } else {
+                        throw new Error('Моды не найдены в JSON');
+                    }
+                })
+                .catch(err => {
+                    console.error('Ошибка:', err);
+                    document.getElementById('grid').innerHTML = 
+                        `<div class="error">
+                            <i class="fas fa-exclamation-triangle"></i> 
+                            Ошибка загрузки: ${err.message}
+                        </div>`;
+                })
+                .finally(() => {
+                    isRefreshing = false;
+                    var refreshBtn = document.getElementById('refreshBtn');
+                    refreshBtn.classList.remove('loading');
+                    refreshBtn.disabled = false;
+                });
+        }
 
         function renderMods(mods) {
             var grid = document.getElementById('grid');
@@ -857,7 +930,6 @@
             console.log('BROWSE_PATH');
         }
 
-        // Функция для обновления статуса связи (вызывается из Python)
         function updateConnectionStatus(connected) {
             var connStatus = document.getElementById('conn-status');
             var connIndicator = document.getElementById('conn-indicator');
@@ -871,7 +943,6 @@
             }
         }
 
-        // Функция для обновления статуса игры (вызывается из Python)
         function updateGameStatus(found, path) {
             var gameStatus = document.getElementById('game-status');
             var gameIndicator = document.getElementById('game-indicator');
@@ -884,6 +955,9 @@
                 gameIndicator.className = 'status-indicator error';
             }
         }
+
+        // Первичная загрузка
+        loadMods();
     </script>
 </body>
 </html>
