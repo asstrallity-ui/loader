@@ -227,12 +227,8 @@
         }
 
         @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
         }
 
         .mod-grid {
@@ -354,42 +350,6 @@
             margin-bottom: 8px;
             color: #a0b0c0;
             font-size: 14px;
-        }
-
-        .setting-item input[type="text"] {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(15, 20, 25, 0.6);
-            border: 1px solid rgba(139, 182, 219, 0.15);
-            border-radius: 8px;
-            color: #e8f4fa;
-            font-size: 14px;
-            font-family: "Roboto", sans-serif;
-        }
-
-        .setting-item input[type="text"]:focus {
-            outline: none;
-            border-color: rgba(139, 182, 219, 0.4);
-        }
-
-        .btn-browse {
-            margin-top: 10px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, rgba(139, 182, 219, 0.15) 0%, rgba(139, 182, 219, 0.08) 100%);
-            border: 1px solid rgba(139, 182, 219, 0.2);
-            color: #8bb6db;
-            border-radius: 8px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-
-        .btn-browse:hover {
-            background: linear-gradient(135deg, rgba(139, 182, 219, 0.25) 0%, rgba(139, 182, 219, 0.15) 100%);
-            border-color: rgba(139, 182, 219, 0.4);
         }
 
         .info-section {
@@ -599,12 +559,8 @@
         }
 
         @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
+            0%   { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
         .progress-text {
@@ -686,7 +642,7 @@
             transform: translateY(-2px);
         }
 
-        /* НОВОЕ: стили методов установки */
+        /* НОВОЕ: методы установки */
 
         .install-methods {
             display: flex;
@@ -737,7 +693,6 @@
             color: #a0b0c0;
         }
 
-        /* Скрытый input пути к игре для Python-части */
         #game-path-input {
             display: none;
         }
@@ -745,7 +700,7 @@
 </head>
 <body>
 <div class="sidebar">
-    <!-- Снег на сайдбаре -->
+    <!-- снег -->
     <div class="snowflake" style="left: 10%; animation-duration: 15s; animation-delay: 0s;">*</div>
     <div class="snowflake" style="left: 30%; animation-duration: 18s; animation-delay: 2s;">*</div>
     <div class="snowflake" style="left: 50%; animation-duration: 20s; animation-delay: 4s;">*</div>
@@ -783,7 +738,6 @@
 </div>
 
 <div class="content">
-    <!-- Снег в контенте -->
     <div class="content-snow">
         <div class="snowflake" style="left: 5%; animation-duration: 17s; animation-delay: 0s;">*</div>
         <div class="snowflake" style="left: 15%; animation-duration: 22s; animation-delay: 1s;">*</div>
@@ -797,7 +751,7 @@
         <div class="snowflake" style="left: 95%; animation-duration: 21s; animation-delay: 8s;">*</div>
     </div>
 
-    <!-- ТАБ МОДОВ -->
+    <!-- Моды -->
     <div id="tab-mods" class="tab-content active">
         <div class="content-header">
             <h2>ДОСТУПНЫЕ МОДЫ</h2>
@@ -811,7 +765,7 @@
         </div>
     </div>
 
-    <!-- ТАБ НАСТРОЕК (ИЗМЕНЕН ПО ТВОЕМУ ЗАДАНИЮ) -->
+    <!-- Настройки -->
     <div id="tab-settings" class="tab-content">
         <h2 style="margin-bottom: 25px;">НАСТРОЙКИ</h2>
 
@@ -842,7 +796,7 @@
         </div>
     </div>
 
-    <!-- ТАБ ИНФОРМАЦИИ (КАК БЫЛО) -->
+    <!-- Информация -->
     <div id="tab-info" class="tab-content">
         <h2 style="margin-bottom: 25px;">ИНФОРМАЦИЯ</h2>
 
@@ -866,10 +820,9 @@
     </div>
 </div>
 
-<!-- Скрытый input для синхронизации пути с Python, если нужно -->
 <input type="text" id="game-path-input" readonly>
 
-<!-- МОДАЛКА УСТАНОВКИ -->
+<!-- Модалка -->
 <div id="installModal" class="modal-overlay">
     <div class="modal-dialog">
         <div class="modal-header">
@@ -890,7 +843,8 @@
 
             <div id="statusMessage" class="status-message">
                 <i class="fas fa-check-circle"></i>
-                <span id="statusText"></span>
+                <!-- ИСПРАВЛЕНО: отдельный id только для модалки -->
+                <span id="modalStatusText"></span>
             </div>
         </div>
         <div class="modal-footer" id="modalFooter">
@@ -900,7 +854,6 @@
 </div>
 
 <script>
-    // Константы репозитория (как в исходнике)
     const REPO_OWNER = "asstrallity-ui";
     const REPO_NAME = "Tanks_Blitz_Mods_Files";
     const BRANCH = "main";
@@ -908,8 +861,6 @@
     const MODS_JSON = REPO_ROOT + "mods.json";
 
     let isRefreshing = false;
-
-    // Хранение метода установки
     let currentInstallMethod = localStorage.getItem("installMethod") === "data" ? "data" : "sdls";
 
     function switchTab(tabName) {
@@ -923,7 +874,6 @@
         const target = document.getElementById("tab-" + tabName);
         if (target) target.classList.add("active");
 
-        // помечаем активную кнопку
         const buttons = document.querySelectorAll(".nav-tab");
         buttons.forEach(btn => {
             if (btn.getAttribute("onclick") && btn.getAttribute("onclick").includes("'" + tabName + "'")) {
@@ -961,7 +911,8 @@
         const statusMsg = document.getElementById("statusMessage");
         statusMsg.classList.add("show", "success");
         statusMsg.classList.remove("error");
-        document.getElementById("statusText").textContent = message;
+        // ИСПРАВЛЕНО: пишем в modalStatusText, не в sidebar statusText
+        document.getElementById("modalStatusText").textContent = message;
         document.getElementById("modalFooter").classList.add("show");
         const icon = statusMsg.querySelector("i");
         icon.className = "fas fa-check-circle";
@@ -971,7 +922,7 @@
         const statusMsg = document.getElementById("statusMessage");
         statusMsg.classList.add("show", "error");
         statusMsg.classList.remove("success");
-        document.getElementById("statusText").textContent = message;
+        document.getElementById("modalStatusText").textContent = message;
         document.getElementById("modalFooter").classList.add("show");
         const icon = statusMsg.querySelector("i");
         icon.className = "fas fa-exclamation-circle";
@@ -1069,7 +1020,6 @@
             return;
         }
         console.log("INSTALL_MOD:" + url);
-        // также сообщим, какой метод установки выбран
         console.log("INSTALL_METHOD:" + currentInstallMethod);
         showModal();
 
@@ -1090,16 +1040,21 @@
         const statusText = document.getElementById("statusText");
         if (!statusPulse || !statusText) return;
 
-        if (connected) {
+        if (connected && gamePath) {
             statusPulse.classList.remove("disconnected");
+            statusText.textContent = "Игра найдена";
             statusText.classList.add("connected");
             statusText.classList.remove("disconnected");
-            statusText.textContent = gamePath ? "Игра найдена" : "Соединение с лаунчером";
+        } else if (connected) {
+            statusPulse.classList.remove("disconnected");
+            statusText.textContent = "Соединение с лаунчером";
+            statusText.classList.add("connected");
+            statusText.classList.remove("disconnected");
         } else {
             statusPulse.classList.add("disconnected");
+            statusText.textContent = "Нет соединения с лаунчером";
             statusText.classList.add("disconnected");
             statusText.classList.remove("connected");
-            statusText.textContent = "Нет соединения с лаунчером";
         }
     }
 
@@ -1108,8 +1063,6 @@
         const input = document.getElementById("game-path-input");
         if (input) input.value = path || "";
     }
-
-    // Методы установки
 
     function updateInstallMethodUI() {
         const sdlsBtn = document.getElementById("installMethodSdls");
@@ -1141,7 +1094,6 @@
         console.log("INSTALL_METHOD:" + currentInstallMethod);
     }
 
-    // Инициализация
     window.addEventListener("load", function () {
         initInstallMethod();
         loadMods();
