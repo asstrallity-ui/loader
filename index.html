@@ -28,7 +28,7 @@
         .snowflake {
             position: absolute;
             color: rgba(210, 230, 255, 0.95);
-            font-size: 18px; /* было 13 */
+            font-size: 18px;
             text-shadow:
                 0 0 6px rgba(15, 23, 42, 0.9),
                 0 0 12px rgba(148, 197, 255, 0.95);
@@ -414,7 +414,7 @@
         }
 
         .info-text {
-            margin: 0;
+            margin: 0 0 16px 0;
             font-size: 14px;
             color: #c1cfdd;
         }
@@ -694,7 +694,7 @@
 </head>
 <body>
 <div class="sidebar">
-    <!-- Снежинки в сайдбаре (большие, заметные) -->
+    <!-- Снежинки в сайдбаре -->
     <div class="snowflake" style="left: 8%; top: -8%; animation-duration: 16s; animation-delay: 0s;">✻</div>
     <div class="snowflake" style="left: 30%; top: -12%; animation-duration: 18s; animation-delay: 2s;">✻</div>
     <div class="snowflake" style="left: 55%; top: -15%; animation-duration: 19s; animation-delay: 4s;">✻</div>
@@ -789,6 +789,16 @@
             <p class="info-text">
                 ASSTRALLITY LOADER — Универсальный установщик модов с поддержкой бэкапа и контроля актуальной версии игры.
             </p>
+
+            <!-- Блок обновления лаунчера -->
+            <h3 class="info-title" style="margin-top: 10px;">Обновление лаунчера</h3>
+            <p class="info-text">
+                Проверка и установка новой версии выполняется самим лаунчером. Нажмите кнопку ниже, чтобы запросить обновление.
+            </p>
+            <button type="button" class="btn" style="max-width: 260px;" onclick="requestSelfUpdate()">
+                <i class="fas fa-arrow-circle-up"></i>
+                Проверить обновления лаунчера
+            </button>
         </div>
     </div>
 </div>
@@ -1063,6 +1073,11 @@
         currentInstallMethod = stored === "data" ? "data" : "sdls";
         updateInstallMethodUI();
         console.log("INSTALL_METHOD:" + currentInstallMethod);
+    }
+
+    // Кнопка обновления лаунчера: шлём сигнал в Python
+    function requestSelfUpdate() {
+        console.log("SELF_UPDATE");
     }
 
     window.addEventListener("load", function () {
