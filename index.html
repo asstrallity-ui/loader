@@ -116,7 +116,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* HEADER С КНОПКОЙ ОБНОВЛЕНИЯ */
         .content-header {
             display: flex;
             align-items: center;
@@ -443,7 +442,6 @@
             border: 1px solid rgba(255,107,107,0.3);
         }
 
-        /* МОДАЛЬНОЕ ОКНО */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -661,7 +659,7 @@
                 </div>
                 <div class="status-info">
                     <div class="status-label">Связь</div>
-                    <div class="status-value" id="conn-status">Нет</div>
+                    <div class="status-value" id="conn-status">Отключено</div>
                 </div>
                 <div class="status-indicator" id="conn-indicator"></div>
             </div>
@@ -737,7 +735,6 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО -->
     <div id="installModal" class="modal-overlay">
         <div class="modal-dialog">
             <div class="modal-header">
@@ -835,7 +832,6 @@
             icon.className = 'fas fa-exclamation-circle';
         }
 
-        // ОБНОВЛЕНИЕ МОДОВ
         function refreshMods() {
             if (isRefreshing) return;
             
@@ -849,7 +845,6 @@
             loadMods();
         }
 
-        // ЗАГРУЗКА МОДОВ
         function loadMods() {
             fetch(MODS_JSON + '?t=' + Date.now())
                 .then(res => {
@@ -935,10 +930,10 @@
             var connIndicator = document.getElementById('conn-indicator');
             
             if (connected) {
-                connStatus.textContent = 'Активно';
+                connStatus.textContent = 'Подключено';
                 connIndicator.className = 'status-indicator active';
             } else {
-                connStatus.textContent = 'Нет';
+                connStatus.textContent = 'Отключено';
                 connIndicator.className = 'status-indicator error';
             }
         }
@@ -948,7 +943,7 @@
             var gameIndicator = document.getElementById('game-indicator');
             
             if (found) {
-                gameStatus.textContent = 'Найдена';
+                gameStatus.textContent = 'Обнаружена';
                 gameIndicator.className = 'status-indicator active';
             } else {
                 gameStatus.textContent = 'Не найдена';
@@ -956,7 +951,6 @@
             }
         }
 
-        // Первичная загрузка
         loadMods();
     </script>
 </body>
