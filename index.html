@@ -6,6 +6,10 @@
     <title>Asstrallity Mod Loader</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- ВАЖНО: Подключаем qwebchannel через CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bower-qt-qwebchannel/5.15.0/qwebchannel.js"></script>
+
     <style>
         :root {
             --bg-color: #0f1012;
@@ -208,7 +212,7 @@
             color: #bbb;
             line-height: 1.5;
             margin-bottom: 20px;
-            flex: 1; /* Push button down */
+            flex: 1;
         }
 
         .install-btn {
@@ -238,43 +242,23 @@
         .install-btn:active { transform: scale(0.98); }
 
         /* Settings Inputs */
-        .input-group {
-            margin-bottom: 20px;
-        }
-        .input-label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-dim);
-        }
+        .input-group { margin-bottom: 20px; }
+        .input-label { display: block; margin-bottom: 8px; color: var(--text-dim); }
         .styled-input {
-            width: 100%;
-            padding: 12px;
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 8px;
-            color: white;
-            font-family: inherit;
+            width: 100%; padding: 12px; background: #111;
+            border: 1px solid #333; border-radius: 8px; color: white; font-family: inherit;
         }
 
         /* Loader */
         #loader {
-            position: fixed; inset: 0;
-            background: var(--bg-color);
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s;
+            position: fixed; inset: 0; background: var(--bg-color); z-index: 999;
+            display: flex; justify-content: center; align-items: center; transition: opacity 0.5s;
         }
         .spinner {
-            width: 40px; height: 40px;
-            border: 3px solid rgba(255, 102, 0, 0.3);
-            border-top-color: var(--accent-color);
-            border-radius: 50%;
-            animation: spin 1s infinite linear;
+            width: 40px; height: 40px; border: 3px solid rgba(255, 102, 0, 0.3);
+            border-top-color: var(--accent-color); border-radius: 50%; animation: spin 1s infinite linear;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-
     </style>
 </head>
 <body>
@@ -282,118 +266,95 @@
     <div id="loader"><div class="spinner"></div></div>
 
     <div class="sidebar">
-        <div class="logo">
-            <i class="fas fa-shield-alt"></i> Asstrallity
-        </div>
-        
-        <button class="nav-btn active" onclick="switchTab('mods')">
-            <i class="fas fa-cubes"></i> Каталог Модов
-        </button>
-        <button class="nav-btn" onclick="switchTab('settings')">
-            <i class="fas fa-sliders-h"></i> Настройки
-        </button>
-        <button class="nav-btn" onclick="switchTab('info')">
-            <i class="fas fa-info-circle"></i> О программе
-        </button>
-
+        <div class="logo"><i class="fas fa-shield-alt"></i> Asstrallity</div>
+        <button class="nav-btn active" onclick="switchTab('mods')"><i class="fas fa-cubes"></i> Моды</button>
+        <button class="nav-btn" onclick="switchTab('settings')"><i class="fas fa-sliders-h"></i> Настройки</button>
+        <button class="nav-btn" onclick="switchTab('info')"><i class="fas fa-info-circle"></i> Инфо</button>
         <div class="connection-status">
             <div id="status-dot" class="status-dot"></div>
-            <span id="status-text">Нет соединения</span>
+            <span id="status-text">Ожидание...</span>
         </div>
     </div>
 
     <div class="main-content">
-        
-        <!-- TABS -->
         <div id="mods" class="tab-pane active">
             <h2>Доступные модификации</h2>
-            <div class="mod-grid" id="mod-container">
-                <!-- JS injects cards here -->
-            </div>
+            <div class="mod-grid" id="mod-container"></div>
         </div>
 
         <div id="settings" class="tab-pane">
-            <h2>Настройки Лаунчера</h2>
+            <h2>Настройки</h2>
             <div style="max-width: 600px;">
                 <div class="input-group">
-                    <label class="input-label">Путь к игре (Tanks Blitz)</label>
-                    <input type="text" id="game-path" class="styled-input" readonly value="Ожидание Python...">
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Статус игры</label>
-                    <div id="game-status" style="color: #888;">Поиск не выполнялся</div>
+                    <label class="input-label">Путь к игре</label>
+                    <input type="text" id="game-path" class="styled-input" readonly value="...">
                 </div>
                 <button class="install-btn" onclick="if(backend) backend.requestModList()" style="width: auto; padding: 10px 20px;">
-                    <i class="fas fa-sync"></i> Обновить список модов
+                    <i class="fas fa-sync"></i> Обновить
                 </button>
             </div>
         </div>
 
         <div id="info" class="tab-pane">
-            <h2>Информация</h2>
-            <p style="color: #ccc; line-height: 1.6;">
-                Официальный загрузчик модов от Asstrallity UI.<br>
-                Версия клиента: <strong>2.1.0</strong><br><br>
-                Разработано для использования с Python backend.
-            </p>
+            <h2>О программе</h2>
+            <p style="color: #ccc;">Версия 2.1 Alpha</p>
         </div>
-
     </div>
 
     <script>
-        // Глобальные переменные
         let backend = null;
 
-        // Эта функция вызывается ИЗ PYTHON после загрузки страницы
-        // Она получает объект канала, который мы создадим в Python
-        function connectBackend() {
+        // --- АВТОМАТИЧЕСКОЕ ПОДКЛЮЧЕНИЕ ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const loader = document.getElementById('loader');
+            
+            // Проверяем, загрузилась ли библиотека Qt
             if (typeof QWebChannel !== 'undefined') {
+                // Подключаемся к каналу, который открыл Python
                 new QWebChannel(qt.webChannelTransport, function(channel) {
                     backend = channel.objects.backend;
                     
-                    // Обновляем UI
+                    // Успешное подключение
                     document.getElementById('status-dot').classList.add('connected');
-                    document.getElementById('status-text').innerText = "Подключено к Python";
+                    document.getElementById('status-text').innerText = "Готово";
                     document.getElementById('status-text').style.color = "#00ff88";
                     
-                    // Скрываем лоадер
-                    const loader = document.getElementById('loader');
+                    // Скрываем спиннер
                     loader.style.opacity = '0';
                     setTimeout(() => loader.style.display = 'none', 500);
 
-                    // Запрашиваем данные
+                    // Просим данные у Python сразу
                     backend.requestModList();
                     backend.requestGamePath();
                 });
             } else {
-                console.error("QWebChannel not found even after injection attempt.");
+                // Если открыто просто в браузере
+                console.warn("QWebChannel not defined. Are you inside the Python app?");
+                setTimeout(() => {
+                   loader.style.display = 'none';
+                   document.getElementById('status-text').innerText = "Браузер (Демо)";
+                }, 1000);
             }
-        }
+        });
 
-        // Вызывается Python-ом для передачи списка
+        // Функция, которую вызывает Python для передачи списка
         function setMods(modsList) {
             const container = document.getElementById('mod-container');
             container.innerHTML = '';
-
             if(!modsList || modsList.length === 0) {
-                container.innerHTML = '<div style="color:#888;">Список модов пуст или не загружен.</div>';
-                return;
+                container.innerHTML = '<div style="color:#888;">Список пуст.</div>'; return;
             }
-
             modsList.forEach(mod => {
                 const card = document.createElement('div');
                 card.className = 'mod-card';
                 const img = mod.image || 'https://via.placeholder.com/400x200?text=No+Image';
-                
                 card.innerHTML = `
                     <div class="mod-img-container">
-                        <img src="${img}" class="mod-img" onerror="this.src='https://via.placeholder.com/400x200?text=Error'">
+                        <img src="${img}" class="mod-img">
                     </div>
                     <div class="mod-info">
-                        <div class="mod-header">
-                            <div class="mod-title">${mod.name}</div>
-                        </div>
-                        <div class="mod-author"><i class="fas fa-user-circle"></i> ${mod.author}</div>
+                        <div class="mod-header"><div class="mod-title">${mod.name}</div></div>
+                        <div class="mod-author">${mod.author}</div>
                         <div class="mod-desc">${mod.description}</div>
                         <button class="install-btn" onclick="installMod('${mod.id}')">
                             <i class="fas fa-download"></i> Установить
@@ -406,37 +367,21 @@
 
         function setGamePath(path) {
             document.getElementById('game-path').value = path || "Не найдено";
-            document.getElementById('game-status').innerText = path ? "Игра обнаружена" : "Игра не найдена";
-            document.getElementById('game-status').style.color = path ? "#00ff88" : "#ff3333";
         }
 
         function installMod(id) {
-            if(backend) {
-                backend.installMod(id);
-            } else {
-                alert("Ошибка: Нет связи с программой.");
-            }
+            if(backend) backend.installMod(id);
         }
 
         function switchTab(id) {
             document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            
-            // Находим кнопку
             const btns = document.querySelectorAll('.nav-btn');
             btns.forEach(btn => {
                 if(btn.getAttribute('onclick').includes(id)) btn.classList.add('active');
             });
         }
-
-        // Фоллбэк для браузера (чтобы не висел вечный лоадер при тесте)
-        setTimeout(() => {
-            if(!backend) {
-                document.getElementById('loader').style.display = 'none';
-                console.log("Browser mode (No Python detected)");
-            }
-        }, 2000);
     </script>
 </body>
 </html>
