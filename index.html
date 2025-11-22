@@ -3,335 +3,440 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asstrallity Loader</title>
+    <title>Asstrallity Mod Loader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --bg-color: #0f1012;
+            --sidebar-color: #16171a;
+            --card-color: #1e2024;
+            --accent-color: #ff6600;
+            --accent-hover: #ff8533;
+            --text-main: #ffffff;
+            --text-dim: #8d9199;
+            --status-ok: #00ff88;
+            --status-err: #ff3333;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #000000;
-            color: #ffffff;
-            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
             height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-color);
             display: flex;
             flex-direction: column;
-            position: relative;
+            padding: 25px;
+            border-right: 1px solid #2a2c33;
         }
-        
-        .background-glow {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none;
-            z-index: 0;
-            background: 
-                radial-gradient(ellipse at 20% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
-        }
-        
-        .top-bar {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid #333333;
-            padding: 0 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .logo { font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-        .tabs { display: flex; gap: 8px; }
-        .tab {
-            padding: 8px 20px; background: transparent; border: none;
-            border-radius: 20px; color: #cccccc; font-size: 14px;
-            font-weight: 500; cursor: pointer; transition: all 0.3s ease;
-        }
-        .tab:hover { background: #333333; color: #ffffff; }
-        .tab.active { background: #ffffff; color: #000000; }
-        
-        .content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 40px 32px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .content::-webkit-scrollbar { width: 8px; }
-        .content::-webkit-scrollbar-track { background: transparent; }
-        .content::-webkit-scrollbar-thumb { background: #333333; border-radius: 4px; }
-        
-        .tab-content { display: none; max-width: 1400px; margin: 0 auto; animation: fadeIn 0.3s ease; }
-        .tab-content.active { display: block; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .loading { text-align: center; padding: 120px 20px; color: #cccccc; }
-        .spinner {
-            width: 32px; height: 32px; border: 3px solid #333333;
-            border-top-color: #ffffff; border-radius: 50%;
-            animation: spin 0.8s linear infinite; margin: 0 auto 20px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .mods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
-        .mod-card {
-            background: rgba(10, 10, 10, 0.95);
-            border: 1px solid #333333;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.25s ease;
-        }
-        .mod-card:hover { transform: translateY(-4px); border-color: #666666; box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1); }
-        .mod-preview { width: 100%; height: 220px; object-fit: cover; background: #222222; }
-        .mod-info { padding: 20px; }
-        .mod-name { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
-        .mod-description { font-size: 14px; color: #cccccc; line-height: 1.5; margin-bottom: 16px; }
-        .mod-meta { display: flex; justify-content: space-between; font-size: 12px; color: #999999; margin-bottom: 16px; }
-        .install-btn {
-            width: 100%; padding: 12px; background: #ffffff; color: #000000;
-            border: none; border-radius: 12px; font-size: 14px; font-weight: 600;
-            cursor: pointer; transition: all 0.2s ease;
-        }
-        .install-btn:hover { background: #f5f5f5; transform: scale(1.02); }
-        
-        .settings-section {
-            background: rgba(10, 10, 10, 0.95);
-            border: 1px solid #333333;
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .settings-section h2 {
-            font-size: 18px;
-            margin-bottom: 8px;
+
+        .logo {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             display: flex;
             align-items: center;
             gap: 10px;
+            text-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
         }
-        
-        .settings-section .section-desc {
-            font-size: 13px;
-            color: #999999;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        
-        .setting-item { margin-bottom: 20px; }
-        .setting-item:last-child { margin-bottom: 0; }
-        
-        .setting-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: #ffffff;
-            margin-bottom: 8px;
-        }
-        
-        .setting-row {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        
-        .setting-input {
-            flex: 1;
-            padding: 12px 16px;
-            background: #111111;
-            border: 1px solid #333333;
-            border-radius: 12px;
-            color: #ffffff;
-            font-size: 14px;
-            outline: none;
-        }
-        
-        .setting-btn {
-            padding: 12px 24px;
-            background: #333333;
-            color: #ffffff;
-            border: 1px solid #555555;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-        
-        .setting-btn:hover { background: #555555; }
-        .setting-btn.primary { background: #ffffff; color: #000000; }
-        .setting-btn.primary:hover { background: #e5e5e5; }
-        
-        .lang-switcher {
-            display: flex;
-            gap: 8px;
-            padding: 4px;
-            background: #111111;
-            border-radius: 12px;
-        }
-        
-        .lang-btn {
-            padding: 8px 16px;
+
+        .nav-btn {
             background: transparent;
             border: none;
-            border-radius: 8px;
-            color: #cccccc;
-            font-size: 14px;
-            font-weight: 500;
+            color: var(--text-dim);
+            padding: 15px 20px;
+            text-align: left;
+            font-size: 16px;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .lang-btn.active { background: #333333; color: #ffffff; }
-        
-        .divider { height: 1px; background: #333333; margin: 20px 0; }
-        
-        .info-card {
-            padding: 16px;
-            background: #111111;
-            border-radius: 12px;
-            margin-bottom: 12px;
-        }
-        
-        .info-card-label {
-            font-size: 13px;
-            color: #999999;
-            margin-bottom: 6px;
-        }
-        
-        .info-card-value {
-            font-size: 15px;
-            font-weight: 500;
-            color: #ffffff;
-        }
-        
-        .info-card-value a {
-            color: #cccccc;
-            text-decoration: none;
-        }
-        .info-card-value a:hover { color: #ffffff; }
-        
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-overlay.show { display: flex; }
-        
-        .modal {
-            background: #111111;
-            border: 1px solid #333333;
-            border-radius: 16px;
-            padding: 32px;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(255, 255, 255, 0.15);
-            animation: slideUp 0.25s ease;
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(15px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .modal-icon {
-            width: 56px; height: 56px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
+            transition: 0.3s;
+            border-radius: 8px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            border: 2px solid #ffffff;
+            gap: 15px;
+            font-weight: 500;
         }
-        
-        .modal-icon.success { background: #ffffff; color: #000000; }
-        .modal-icon.error { background: #ffffff; color: #000000; }
-        .modal-icon.warning { background: #ffffff; color: #000000; }
-        
-        .modal-title {
+
+        .nav-btn:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .nav-btn.active {
+            background-color: rgba(255, 102, 0, 0.1);
+            color: var(--accent-color);
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .connection-status {
+            margin-top: auto;
+            font-size: 12px;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-top: 20px;
+            border-top: 1px solid #2a2c33;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background-color: var(--status-err);
+            box-shadow: 0 0 5px var(--status-err);
+            transition: 0.3s;
+        }
+        .status-dot.connected {
+            background-color: var(--status-ok);
+            box-shadow: 0 0 5px var(--status-ok);
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .main-content::-webkit-scrollbar { width: 6px; }
+        .main-content::-webkit-scrollbar-track { background: transparent; }
+        .main-content::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+        .tab-pane { display: none; animation: fadeIn 0.3s ease-out; }
+        .tab-pane.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        /* --- MOD CARDS --- */
+        .mod-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .mod-card {
+            background-color: var(--card-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mod-card:hover {
+            transform: translateY(-5px);
+            background-color: #25272d;
+            border-color: rgba(255, 102, 0, 0.3);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .mod-img-container {
+            width: 100%;
+            height: 180px;
+            background-color: #111;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mod-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .mod-card:hover .mod-img { transform: scale(1.1); }
+
+        .mod-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .mod-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .mod-title {
             font-size: 20px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.2;
         }
-        
-        .modal-message {
+
+        .mod-author {
+            font-size: 13px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mod-desc {
             font-size: 14px;
-            color: #cccccc;
-            text-align: center;
-            line-height: 1.6;
-            margin-bottom: 24px;
+            color: #bbb;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex: 1; /* Push button down */
+        }
+
+        .install-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, #ff6600, #ff8533);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .install-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4);
         }
         
-        .modal-btn {
+        .install-btn:active { transform: scale(0.98); }
+
+        /* Settings Inputs */
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-dim);
+        }
+        .styled-input {
             width: 100%;
             padding: 12px;
-            background: #ffffff;
-            color: #000000;
-            border: none;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
         }
-        
-        .modal-btn:hover { background: #e5e5e5; }
+
+        /* Loader */
+        #loader {
+            position: fixed; inset: 0;
+            background: var(--bg-color);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s;
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid rgba(255, 102, 0, 0.3);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
     </style>
 </head>
 <body>
-    <div class="background-glow"></div>
 
-    <div class="top-bar">
-        <div class="logo">ASSTRALLITY</div>
-        <div class="tabs">
-            <button class="tab active" data-tab="mods" data-i18n="tab_mods">Моды</button>
-            <button class="tab" data-tab="settings" data-i18n="tab_settings">Настройки</button>
-            <button class="tab" data-tab="about" data-i18n="tab_about">О программе</button>
+    <div id="loader"><div class="spinner"></div></div>
+
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i> Asstrallity
+        </div>
+        
+        <button class="nav-btn active" onclick="switchTab('mods')">
+            <i class="fas fa-cubes"></i> Каталог Модов
+        </button>
+        <button class="nav-btn" onclick="switchTab('settings')">
+            <i class="fas fa-sliders-h"></i> Настройки
+        </button>
+        <button class="nav-btn" onclick="switchTab('info')">
+            <i class="fas fa-info-circle"></i> О программе
+        </button>
+
+        <div class="connection-status">
+            <div id="status-dot" class="status-dot"></div>
+            <span id="status-text">Нет соединения</span>
         </div>
     </div>
-  
-    <div class="content">
-        <div class="tab-content active" id="mods-tab">
-            <div class="loading"><div class="spinner"></div><div data-i18n="loading_mods">Загрузка списка модов...</div></div>
-            <div class="mods-grid" id="mods-container"></div>
+
+    <div class="main-content">
+        
+        <!-- TABS -->
+        <div id="mods" class="tab-pane active">
+            <h2>Доступные модификации</h2>
+            <div class="mod-grid" id="mod-container">
+                <!-- JS injects cards here -->
+            </div>
         </div>
 
-        <div class="tab-content" id="settings-tab">
-            <div class="settings-section">
-                <h2>🌐 <span data-i18n="lang_title">Язык / Language</span></h2>
-                <div class="lang-switcher">
-                    <button class="lang-btn active" data-lang="ru">Русский</button>
-                    <button class="lang-btn" data-lang="en">English</button>
+        <div id="settings" class="tab-pane">
+            <h2>Настройки Лаунчера</h2>
+            <div style="max-width: 600px;">
+                <div class="input-group">
+                    <label class="input-label">Путь к игре (Tanks Blitz)</label>
+                    <input type="text" id="game-path" class="styled-input" readonly value="Ожидание Python...">
                 </div>
-            </div>
-
-            <div class="settings-section">
-                <h2>🎮 <span data-i18n="game_search_title">Поиск игры</span></h2>
-                <p class="section-desc" data-i18n="game_search_desc">Автоматический поиск World of Tanks Blitz</p>
-                <button class="setting-btn primary" id="find-game-btn" data-i18n="find_game_btn">Найти игру</button>
-            </div>
-
-            <div class="settings-section">
-                <h2>📂 <span data-i18n="paths_title">Пути</span></h2>
-                
-                <div class="setting-item">
-                    <label class="setting-label" data-i18n="game_exe_label">Исполняемый файл</label>
-                    <input type="text" class="setting-input" id="exe-display" readonly>
+                <div class="input-group">
+                    <label class="input-label">Статус игры</label>
+                    <div id="game-status" style="color: #888;">Поиск не выполнялся</div>
                 </div>
+                <button class="install-btn" onclick="if(backend) backend.requestModList()" style="width: auto; padding: 10px 20px;">
+                    <i class="fas fa-sync"></i> Обновить список модов
+                </button>
+            </div>
+        </div>
+
+        <div id="info" class="tab-pane">
+            <h2>Информация</h2>
+            <p style="color: #ccc; line-height: 1.6;">
+                Официальный загрузчик модов от Asstrallity UI.<br>
+                Версия клиента: <strong>2.1.0</strong><br><br>
+                Разработано для использования с Python backend.
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Глобальные переменные
+        let backend = null;
+
+        // Эта функция вызывается ИЗ PYTHON после загрузки страницы
+        // Она получает объект канала, который мы создадим в Python
+        function connectBackend() {
+            if (typeof QWebChannel !== 'undefined') {
+                new QWebChannel(qt.webChannelTransport, function(channel) {
+                    backend = channel.objects.backend;
+                    
+                    // Обновляем UI
+                    document.getElementById('status-dot').classList.add('connected');
+                    document.getElementById('status-text').innerText = "Подключено к Python";
+                    document.getElementById('status-text').style.color = "#00ff88";
+                    
+                    // Скрываем лоадер
+                    const loader = document.getElementById('loader');
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+
+                    // Запрашиваем данные
+                    backend.requestModList();
+                    backend.requestGamePath();
+                });
+            } else {
+                console.error("QWebChannel not found even after injection attempt.");
+            }
+        }
+
+        // Вызывается Python-ом для передачи списка
+        function setMods(modsList) {
+            const container = document.getElementById('mod-container');
+            container.innerHTML = '';
+
+            if(!modsList || modsList.length === 0) {
+                container.innerHTML = '<div style="color:#888;">Список модов пуст или не загружен.</div>';
+                return;
+            }
+
+            modsList.forEach(mod => {
+                const card = document.createElement('div');
+                card.className = 'mod-card';
+                const img = mod.image || 'https://via.placeholder.com/400x200?text=No+Image';
                 
-                <div class="divider"></div>
-                
-                <div class="setting-item">
-                    <label class="setting-label" data-i18n="data_folder_label">Папка
+                card.innerHTML = `
+                    <div class="mod-img-container">
+                        <img src="${img}" class="mod-img" onerror="this.src='https://via.placeholder.com/400x200?text=Error'">
+                    </div>
+                    <div class="mod-info">
+                        <div class="mod-header">
+                            <div class="mod-title">${mod.name}</div>
+                        </div>
+                        <div class="mod-author"><i class="fas fa-user-circle"></i> ${mod.author}</div>
+                        <div class="mod-desc">${mod.description}</div>
+                        <button class="install-btn" onclick="installMod('${mod.id}')">
+                            <i class="fas fa-download"></i> Установить
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function setGamePath(path) {
+            document.getElementById('game-path').value = path || "Не найдено";
+            document.getElementById('game-status').innerText = path ? "Игра обнаружена" : "Игра не найдена";
+            document.getElementById('game-status').style.color = path ? "#00ff88" : "#ff3333";
+        }
+
+        function installMod(id) {
+            if(backend) {
+                backend.installMod(id);
+            } else {
+                alert("Ошибка: Нет связи с программой.");
+            }
+        }
+
+        function switchTab(id) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            // Находим кнопку
+            const btns = document.querySelectorAll('.nav-btn');
+            btns.forEach(btn => {
+                if(btn.getAttribute('onclick').includes(id)) btn.classList.add('active');
+            });
+        }
+
+        // Фоллбэк для браузера (чтобы не висел вечный лоадер при тесте)
+        setTimeout(() => {
+            if(!backend) {
+                document.getElementById('loader').style.display = 'none';
+                console.log("Browser mode (No Python detected)");
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
