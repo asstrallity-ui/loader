@@ -136,71 +136,64 @@
     </main>
 
 <script>
-    // === ДАННЫЕ МОДОВ (Можно грузить с JSON, но для теста так быстрее) ===
-    const MODS = [
-        { name: "ОЧОК МОД", ver: "1.0", author: "Asstrallity", file: "Mods/Test/Data.zip" },
-        { name: "Super Graphics", ver: "2.1", author: "Community", file: "Mods/Graph/Data.zip" },
-        { name: "No Recoil", ver: "1.0", author: "User123", file: "Mods/Cheat/Data.zip" },
-        { name: "Fast Load", ver: "0.5", author: "Speedrun", file: "Mods/Fast/Data.zip" },
-    ];
-
-    // === PYTHON BRIDGE ===
     let py = null;
 
     window.onload = () => {
-        // Заполняем сетку
-        const grid = document.getElementById('modGrid');
-        MODS.forEach(mod => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <div class="card-img">
-                    <span style="color:#444; font-weight:bold; font-size:30px">${mod.name[0]}</span>
-                </div>
-                <div class="card-info">
-                    <h3>${mod.name}</h3>
-                    <p>v${mod.ver} • ${mod.author}</p>
-                </div>
-                <button class="btn-install" onclick="install('${mod.file}')">УСТАНОВИТЬ</button>
-            `;
-            grid.appendChild(card);
-        });
-
-        // Подключаемся к Python
-        if (typeof qt != 'undefined') {
+        // Проверяем, внедрила ли программа библиотеку
+        if (typeof QWebChannel !== 'undefined') {
             new QWebChannel(qt.webChannelTransport, (channel) => {
                 py = channel.objects.backend;
                 
-                // Запрашиваем текущий путь у Питона
-                py.requestGamePath((path) => {
-                    document.getElementById('pathDisplay').innerText = path;
-                });
+                // Убираем экран загрузки, если есть
+                const loader = document.getElementById('loader');
+                if(loader) loader.style.display = 'none';
+                
+                // Просим список модов
+                py.requestMods();
             });
+        } else {
+            // Если открыли просто в браузере
+            console.log("Запущено не через программу (QWebChannel не найден)");
         }
     };
 
-    // === ФУНКЦИИ ===
-    function openTab(id) {
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        
-        event.target.classList.add('active');
-        document.getElementById(id).classList.add('active');
+    // Эту функцию вызывает Питон
+    function setModsList(jsonString) {
+        try {
+            const mods = JSON.parse(jsonString);
+            const grid = document.getElementById('grid');
+            if(!grid) return;
+            grid.innerHTML = '';
+
+            mods.forEach(mod => {
+                // Логика картинок
+                let imgHtml = `<div style="font-size:30px;color:#555">${mod.name[0]}</div>`;
+                if (mod.image_url && mod.image_url.startsWith("http")) {
+                    imgHtml = `<img src="${mod.image_url}" style="width:100%;height:100%;object-fit:cover">`;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'card'; // Убедитесь что стиль card есть в CSS
+                card.innerHTML = `
+                    <div class="card-img">${imgHtml}</div>
+                    <div class="info">
+                        <h3>${mod.name}</h3>
+                        <p>v${mod.version || '1.0'}</p>
+                    </div>
+                    <button class="btn" onclick="doInstall('${mod.filename}')">УСТАНОВИТЬ</button>
+                `;
+                grid.appendChild(card);
+            });
+        } catch(e) {
+            console.error("Ошибка парсинга JSON:", e);
+        }
     }
 
-    function install(filename) {
-        if (!py) return alert("Запустите через программу!");
-        py.installMod(filename); // Отправляем команду в Python
-    }
-
-    function selectPath() {
-        if (py) py.openPathDialog();
-    }
-
-    // Функции, вызываемые из Python
-    function updatePathUI(newPath) {
-        document.getElementById('pathDisplay').innerText = newPath;
+    function doInstall(file) {
+        if(py) py.installMod(file);
+        else alert("Нет связи с программой!");
     }
 </script>
 </body>
 </html>
+
