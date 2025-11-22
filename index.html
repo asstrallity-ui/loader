@@ -3,22 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asstrallity Mods</title>
+    <title>Asstrallity Loader</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #0a0a0a;
             color: #ffffff;
-            padding: 20px;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
+        
+        .top-bar {
+            background: #0f0f0f;
+            border-bottom: 1px solid #1a1a1a;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .tabs { display: flex; gap: 8px; }
+        
+        .tab {
+            padding: 8px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 20px;
+            color: #808080;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab:hover { background: #1a1a1a; color: #ffffff; }
+        .tab.active { background: #ffffff; color: #0a0a0a; }
+        
+        .content { flex: 1; overflow-y: auto; padding: 40px 32px; }
+        .content::-webkit-scrollbar { width: 8px; }
+        .content::-webkit-scrollbar-track { background: #0a0a0a; }
+        .content::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 4px; }
+        
+        .tab-content { display: none; max-width: 1400px; margin: 0 auto; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .loading { text-align: center; padding: 120px 20px; color: #808080; }
+        
+        .spinner {
+            width: 32px; height: 32px;
+            border: 3px solid #1a1a1a;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
         
         .mods-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 24px;
-            max-width: 1400px;
-            margin: 0 auto;
         }
         
         .mod-card {
@@ -36,6 +98,11 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         }
         
+        .mod-card.selected {
+            border-color: #ffffff;
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+        }
+        
         .mod-preview {
             width: 100%;
             height: 200px;
@@ -43,61 +110,103 @@
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
         }
         
-        .mod-info {
-            padding: 20px;
+        .mod-info { padding: 20px; }
+        .mod-name { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .mod-description { font-size: 14px; color: #808080; line-height: 1.5; margin-bottom: 16px; }
+        .mod-meta { display: flex; justify-content: space-between; font-size: 12px; color: #606060; }
+        
+        .settings-section {
+            background: #0f0f0f;
+            border: 1px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
         }
         
-        .mod-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+        .settings-section h2 { font-size: 20px; margin-bottom: 20px; }
+        .setting-label { display: block; font-size: 13px; color: #808080; margin-bottom: 8px; font-weight: 500; }
+        .setting-row { display: flex; gap: 12px; }
         
-        .mod-description {
+        .setting-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            color: #ffffff;
             font-size: 14px;
-            color: #808080;
-            line-height: 1.5;
-            margin-bottom: 16px;
+            outline: none;
         }
         
-        .mod-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #606060;
+        .setting-btn {
+            padding: 12px 24px;
+            background: #1a1a1a;
+            color: #ffffff;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
         
-        .loading {
-            text-align: center;
-            padding: 100px 20px;
-            color: #808080;
+        .setting-btn:hover { background: #2a2a2a; }
+        
+        .info-section {
+            background: #0f0f0f;
+            border: 1px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 24px;
         }
         
-        .spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid #1a1a1a;
-            border-top-color: #ffffff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        .info-section h2 { font-size: 20px; margin-bottom: 12px; }
+        .info-section p { font-size: 14px; color: #808080; line-height: 1.6; margin-bottom: 8px; }
     </style>
 </head>
 <body>
-    <div class="loading">
-        <div class="spinner"></div>
-        <div>Загрузка модов...</div>
+    <div class="top-bar">
+        <div class="logo">ASSTRALLITY</div>
+        <div class="tabs">
+            <button class="tab active" data-tab="mods">Моды</button>
+            <button class="tab" data-tab="settings">Настройки</button>
+        </div>
     </div>
-    <div class="mods-grid" id="mods-container"></div>
+
+    <div class="content">
+        <div class="tab-content active" id="mods-tab">
+            <div class="loading">
+                <div class="spinner"></div>
+                <div>Загрузка списка модов...</div>
+            </div>
+            <div class="mods-grid" id="mods-container"></div>
+        </div>
+
+        <div class="tab-content" id="settings-tab">
+            <div class="settings-section">
+                <h2>Путь установки</h2>
+                <div>
+                    <label class="setting-label">Папка для установки модов</label>
+                    <div class="setting-row">
+                        <input type="text" class="setting-input" id="path-display" readonly>
+                        <button class="setting-btn" id="change-path-btn">Изменить</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>О программе</h2>
+                <p><strong>Asstrallity Loader</strong> — современный менеджер модов</p>
+                <p>Версия: 1.0.0</p>
+                <p>Разработчик: asstrallity-ui</p>
+                <p>GitHub: <a href="https://github.com/asstrallity-ui/mods" style="color: #fff;">asstrallity-ui/mods</a></p>
+            </div>
+        </div>
+    </div>
 
     <script>
         const MODS_URL = 'https://raw.githubusercontent.com/asstrallity-ui/mods/main/mods.json';
         
+        // Загрузка модов
         async function loadMods() {
             try {
                 const response = await fetch(MODS_URL);
@@ -109,6 +218,7 @@
             }
         }
         
+        // Отображение модов
         function displayMods(mods) {
             document.querySelector('.loading').style.display = 'none';
             const container = document.getElementById('mods-container');
@@ -119,7 +229,7 @@
             }
             
             container.innerHTML = mods.map(mod => `
-                <div class="mod-card" data-file="${mod.dataFile}">
+                <div class="mod-card" data-file="${mod.dataFile}" onclick="selectMod(this, '${mod.dataFile}')">
                     <img class="mod-preview" 
                          src="${mod.preview}" 
                          alt="${mod.name}"
@@ -136,6 +246,38 @@
             `).join('');
         }
         
+        // Выбор мода (визуально)
+        function selectMod(card, file) {
+            // Убираем выделение со всех
+            document.querySelectorAll('.mod-card').forEach(c => c.classList.remove('selected'));
+            // Выделяем выбранную
+            card.classList.add('selected');
+            
+            // Отправляем событие в Python
+            if (window.pyModSelected) {
+                window.pyModSelected(file);
+            }
+        }
+        
+        // Переключение табов
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab + '-tab').classList.add('active');
+            });
+        });
+        
+        // Кнопка изменения пути (вызывает Python)
+        document.getElementById('change-path-btn').addEventListener('click', function() {
+            if (window.pyChangePath) {
+                window.pyChangePath();
+            }
+        });
+        
+        // Инициализация
         window.addEventListener('DOMContentLoaded', loadMods);
     </script>
 </body>
