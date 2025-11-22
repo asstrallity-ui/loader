@@ -311,6 +311,33 @@
             </div>
 
             <div class="settings-section">
+                <h2>⚙️ <span data-i18n="install_mode_title">Режим установки</span></h2>
+                <p class="section-desc" data-i18n="install_mode_desc">Выберите куда устанавливать моды</p>
+                
+                <div class="setting-item">
+                    <label class="setting-label" data-i18n="install_mode_label">Тип установки</label>
+                    <div class="lang-switcher">
+                        <button class="lang-btn active" data-mode="data" id="mode-data">
+                            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <span>📁</span>
+                                <span data-i18n="mode_data">Обычное обновление</span>
+                            </div>
+                        </button>
+                        <button class="lang-btn" data-mode="micropatch" id="mode-micropatch">
+                            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <span>📦</span>
+                                <span data-i18n="mode_micropatch">Микропатч</span>
+                            </div>
+                        </button>
+                    </div>
+                    <p style="font-size:12px;color:#606060;margin-top:12px;line-height:1.6;">
+                        <span data-i18n="install_mode_hint_data">📁 Обычное обновление: устанавливает в Data</span><br>
+                        <span data-i18n="install_mode_hint_micro">📦 Микропатч: устанавливает в Documents/packs</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="settings-section">
                 <h2>🎮 <span data-i18n="game_search_title">Поиск игры</span></h2>
                 <p class="section-desc" data-i18n="game_search_desc">Автоматический поиск World of Tanks Blitz</p>
                 <button class="setting-btn primary" id="find-game-btn" data-i18n="find_game_btn">Найти игру</button>
@@ -380,21 +407,29 @@
     <div class="modal-overlay" id="modal">
         <div class="modal">
             <div class="modal-icon" id="modal-icon">✓</div>
-            <div class="modal-title" id="modal-title">Игра найдена</div>
-            <div class="modal-message" id="modal-message">tanksblitz.exe</div>
+            <div class="modal-title" id="modal-title">Успех</div>
+            <div class="modal-message" id="modal-message">Операция выполнена</div>
             <button class="modal-btn" onclick="closeModal()">OK</button>
         </div>
     </div>
 
     <script>
-        // ОБНОВЛЕННАЯ ССЫЛКА НА НОВЫЙ РЕПОЗИТОРИЙ
         const MODS_URL = 'https://raw.githubusercontent.com/asstrallity-ui/Loader_Blitz/main/mods.json';
         
         const translations = {
             ru: {
-                tab_mods: 'Моды', tab_settings: 'Настройки', tab_about: 'О программе',
+                tab_mods: 'Моды', 
+                tab_settings: 'Настройки', 
+                tab_about: 'О программе',
                 loading_mods: 'Загрузка списка модов...',
                 lang_title: 'Язык / Language',
+                install_mode_title: 'Режим установки',
+                install_mode_desc: 'Выберите куда устанавливать моды',
+                install_mode_label: 'Тип установки',
+                mode_data: 'Обычное обновление',
+                mode_micropatch: 'Микропатч',
+                install_mode_hint_data: '📁 Обычное обновление: устанавливает в Data',
+                install_mode_hint_micro: '📦 Микропатч: устанавливает в Documents/packs',
                 game_search_title: 'Поиск игры',
                 game_search_desc: 'Автоматический поиск World of Tanks Blitz',
                 find_game_btn: 'Найти игру',
@@ -414,9 +449,18 @@
                 game_found: 'Игра найдена'
             },
             en: {
-                tab_mods: 'Mods', tab_settings: 'Settings', tab_about: 'About',
+                tab_mods: 'Mods', 
+                tab_settings: 'Settings', 
+                tab_about: 'About',
                 loading_mods: 'Loading mods list...',
                 lang_title: 'Language / Язык',
+                install_mode_title: 'Installation Mode',
+                install_mode_desc: 'Choose where to install mods',
+                install_mode_label: 'Installation Type',
+                mode_data: 'Regular Update',
+                mode_micropatch: 'Micropatch',
+                install_mode_hint_data: '📁 Regular Update: installs to Data',
+                install_mode_hint_micro: '📦 Micropatch: installs to Documents/packs',
                 game_search_title: 'Game Search',
                 game_search_desc: 'Automatic search for World of Tanks Blitz',
                 find_game_btn: 'Find Game',
@@ -446,7 +490,7 @@
                 const key = el.getAttribute('data-i18n');
                 if (translations[lang][key]) el.textContent = translations[lang][key];
             });
-            document.querySelectorAll('.lang-btn').forEach(btn => {
+            document.querySelectorAll('.lang-btn[data-lang]').forEach(btn => {
                 btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
             });
             document.querySelectorAll('.install-btn').forEach(btn => {
@@ -504,6 +548,12 @@
             document.getElementById('change-path-btn').style.display = gameFound ? 'none' : 'block';
         };
         
+        window.updateInstallMode = function(mode) {
+            document.querySelectorAll('[data-mode]').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
+            });
+        };
+        
         document.querySelectorAll('.tab').forEach(t => {
             t.onclick = function() {
                 document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
@@ -513,8 +563,16 @@
             };
         });
         
-        document.querySelectorAll('.lang-btn').forEach(btn => {
+        document.querySelectorAll('.lang-btn[data-lang]').forEach(btn => {
             btn.onclick = () => setLanguage(btn.getAttribute('data-lang'));
+        });
+        
+        document.querySelectorAll('[data-mode]').forEach(btn => {
+            btn.onclick = () => {
+                const mode = btn.getAttribute('data-mode');
+                window.installModeChanged = mode;
+                window.updateInstallMode(mode);
+            };
         });
         
         document.addEventListener('click', e => {
