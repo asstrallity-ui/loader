@@ -683,6 +683,45 @@
         .btn-install:active {
             transform: scale(0.98);
         }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: rgba(15, 20, 25, 0.6);
+            border: 1px solid rgba(139, 182, 219, 0.15);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            border-color: rgba(139, 182, 219, 0.4);
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #a0b0c0;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-text {
+            color: #e8f4fa;
+            font-weight: 500;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            background: rgba(139, 182, 219, 0.2);
+            border-color: rgba(139, 182, 219, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -751,16 +790,18 @@
             <h2 style="margin-bottom: 25px;">НАСТРОЙКИ</h2>
 
             <div class="settings-section">
-                <h3><i class="fas fa-download"></i> Установка модов</h3>
+                <h3><i class="fas fa-download"></i> Метод установки модов</h3>
                 <div class="setting-item">
-                    <button class="btn-install" onclick="installSDLS()">
-                        <i class="fas fa-folder"></i> sDLS - Установка мода в /Documents/packs
-                    </button>
-                </div>
-                <div class="setting-item">
-                    <button class="btn-install" onclick="installNSDLS()">
-                        <i class="fas fa-cube"></i> n-sDLS - Установка в /Data/tanksblitz.exe
-                    </button>
+                    <div class="radio-group" style="display: flex; flex-direction: column; gap: 12px;">
+                        <label class="radio-option">
+                            <input type="radio" name="installMethod" value="sdls" id="sdlsOption" onchange="setInstallMethod('sdls')">
+                            <span class="radio-text"><i class="fas fa-folder"></i> sDLS - Установка мода в /Documents/packs</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="installMethod" value="nsdls" id="nsdlsOption" onchange="setInstallMethod('nsdls')">
+                            <span class="radio-text"><i class="fas fa-cube"></i> n-sDLS - Установка в /Data/tanksblitz.exe</span>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -852,6 +893,8 @@
             document.getElementById('statusMessage').classList.remove('show', 'success', 'error');
             document.getElementById('modalFooter').classList.remove('show');
         }
+
+        let selectedInstallMethod = 'sdls'; // По умолчанию sDLS
 
         function updateProgress(percent, message) {
             document.getElementById('progressBar').style.width = percent + '%';
@@ -1001,13 +1044,19 @@
             updateConnectionStatus(found, path);
         }
 
-        function installSDLS() {
-            console.log('INSTALL_SDLS');
+        function setInstallMethod(method) {
+            selectedInstallMethod = method;
+            console.log('SET_INSTALL_METHOD:' + method);
         }
 
-        function installNSDLS() {
-            console.log('INSTALL_NSDLS');
+        function install(url, name) {
+            console.log('INSTALL_MOD:' + url + ':' + selectedInstallMethod);
         }
+
+        // При загрузке страницы проверим, какой метод был установлен ранее
+        window.onload = function() {
+            console.log('PAGE_LOADED');
+        };
 
         loadMods();
     </script>
