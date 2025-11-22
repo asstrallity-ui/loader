@@ -368,8 +368,8 @@
                 <div class="info-card">
                     <div class="info-card-label" data-i18n="about_repo">Репозиторий</div>
                     <div class="info-card-value">
-                        <a href="https://github.com/asstrallity-ui/Mods_blitz" target="_blank" style="color: #4A90E2; text-decoration: none;">
-                            github.com/asstrallity-ui/Mods_blitz ↗
+                        <a href="https://github.com/asstrallity-ui/Loader_Blitz" target="_blank" style="color: #4A90E2; text-decoration: none;">
+                            github.com/asstrallity-ui/Loader_Blitz ↗
                         </a>
                     </div>
                 </div>
@@ -387,8 +387,8 @@
     </div>
 
     <script>
-        // ОБНОВЛЕННАЯ ССЫЛКА НА РЕПОЗИТОРИЙ
-        const MODS_URL = 'https://raw.githubusercontent.com/asstrallity-ui/Mods_blitz/main/mods.json';
+        // ОБНОВЛЕННАЯ ССЫЛКА НА НОВЫЙ РЕПОЗИТОРИЙ
+        const MODS_URL = 'https://raw.githubusercontent.com/asstrallity-ui/Loader_Blitz/main/mods.json';
         
         const translations = {
             ru: {
@@ -461,6 +461,7 @@
                 showMods(d.mods);
             } catch(e) {
                 document.querySelector('.loading').innerHTML = '<div>Ошибка загрузки</div>';
+                console.error('Ошибка загрузки модов:', e);
             }
         }
         
