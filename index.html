@@ -8,7 +8,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bower-qt-qwebchannel/5.15.0/qwebchannel.js"></script>
 
     <style>
-        /* Темно-серая цветовая схема с белым */
         body { 
             background: #121212; 
             color: #ffffff; 
@@ -34,7 +33,7 @@
             font-family: 'Rajdhani', sans-serif; 
             font-size: 28px; 
             color: #ffffff; 
-            margin-bottom: 40px; 
+            margin-bottom: 30px; 
             font-weight: bold; 
             display: flex; 
             align-items: center; 
@@ -45,6 +44,45 @@
         .logo i {
             color: #e0e0e0;
             filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+        }
+
+        /* НАВИГАЦИЯ (ВКЛАДКИ) */
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: auto;
+        }
+
+        .nav-tab {
+            padding: 12px 15px;
+            background: transparent;
+            border: none;
+            color: #b0b0b0;
+            font-size: 15px;
+            cursor: pointer;
+            text-align: left;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-tab:hover {
+            background: #252525;
+            color: #ffffff;
+        }
+
+        .nav-tab.active {
+            background: #2d2d2d;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .nav-tab i {
+            width: 20px;
+            text-align: center;
         }
         
         .content { 
@@ -66,9 +104,20 @@
             background: #404040;
             border-radius: 5px;
         }
-        
-        .content::-webkit-scrollbar-thumb:hover {
-            background: #525252;
+
+        /* TAB CONTENT */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .mod-grid { 
@@ -157,6 +206,89 @@
             transform: scale(0.98); 
         }
 
+        /* НАСТРОЙКИ */
+        .settings-section {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #2d2d2d;
+        }
+
+        .settings-section h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .setting-item {
+            margin-bottom: 20px;
+        }
+
+        .setting-item label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+
+        .setting-item input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            background: #252525;
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .setting-item input[type="text"]:focus {
+            outline: none;
+            border-color: #5a5a5a;
+        }
+
+        .btn-browse {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4a4a4a 0%, #2d2d2d 100%);
+            border: 1px solid #525252;
+            color: #ffffff;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-browse:hover {
+            background: linear-gradient(135deg, #5a5a5a 0%, #3d3d3d 100%);
+        }
+
+        /* ИНФОРМАЦИЯ */
+        .info-section {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #2d2d2d;
+            line-height: 1.8;
+        }
+
+        .info-section h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .info-section p {
+            color: #b0b0b0;
+            margin-bottom: 15px;
+        }
+
         /* Статус */
         .status-box { 
             margin-top: auto; 
@@ -216,6 +348,20 @@
         <div class="logo">
             <i class="fas fa-cube"></i> ASSTRALLITY
         </div>
+
+        <!-- НАВИГАЦИЯ -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('mods')">
+                <i class="fas fa-th-large"></i> Моды
+            </button>
+            <button class="nav-tab" onclick="switchTab('settings')">
+                <i class="fas fa-cog"></i> Настройки
+            </button>
+            <button class="nav-tab" onclick="switchTab('info')">
+                <i class="fas fa-info-circle"></i> Информация
+            </button>
+        </div>
+
         <div class="status-box">
             <div>
                 <i class="fas fa-plug"></i> 
@@ -229,9 +375,57 @@
     </div>
 
     <div class="content">
-        <h2>ДОСТУПНЫЕ МОДЫ</h2>
-        <div id="grid" class="mod-grid">
-            <div class="loading">Загрузка списка с GitHub...</div>
+        <!-- ВКЛАДКА: МОДЫ -->
+        <div id="tab-mods" class="tab-content active">
+            <h2>ДОСТУПНЫЕ МОДЫ</h2>
+            <div id="grid" class="mod-grid">
+                <div class="loading">Загрузка списка с GitHub...</div>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА: НАСТРОЙКИ -->
+        <div id="tab-settings" class="tab-content">
+            <h2>НАСТРОЙКИ</h2>
+            
+            <div class="settings-section">
+                <h3><i class="fas fa-folder-open"></i> Путь к игре</h3>
+                <div class="setting-item">
+                    <label>Папка установки World of Tanks Blitz:</label>
+                    <input type="text" id="game-path-input" readonly placeholder="Папка не выбрана">
+                    <button class="btn-browse" onclick="browseGamePath()">
+                        <i class="fas fa-folder-open"></i> Выбрать папку
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3><i class="fab fa-github"></i> Репозиторий модов</h3>
+                <div class="setting-item">
+                    <label>GitHub репозиторий:</label>
+                    <input type="text" id="repo-input" value="asstrallity-ui/Loader_Blitz" readonly>
+                </div>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА: ИНФОРМАЦИЯ -->
+        <div id="tab-info" class="tab-content">
+            <h2>ИНФОРМАЦИЯ</h2>
+            
+            <div class="info-section">
+                <h3>О программе</h3>
+                <p><strong>Asstrallity Mods Loader</strong> — удобный загрузчик модов для World of Tanks Blitz с современным интерфейсом.</p>
+                
+                <h3>Как использовать?</h3>
+                <p>1. Программа автоматически найдет папку игры<br>
+                2. Выберите нужный мод во вкладке "Моды"<br>
+                3. Нажмите кнопку "Установить"<br>
+                4. Мод будет автоматически скачан и установлен</p>
+                
+                <h3>Требования</h3>
+                <p>• Windows 10/11<br>
+                • World of Tanks Blitz<br>
+                • Интернет соединение</p>
+            </div>
         </div>
     </div>
 
@@ -245,7 +439,35 @@
         
         let backend = null;
 
-        // 1. Загрузка JSON с GitHub
+        // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+        function switchTab(tabName) {
+            // Скрыть все вкладки
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Убрать активность с кнопок
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Показать нужную вкладку
+            document.getElementById('tab-' + tabName).classList.add('active');
+            
+            // Активировать кнопку
+            event.target.classList.add('active');
+        }
+
+        // ВЫБОР ПАПКИ ИГРЫ
+        function browseGamePath() {
+            if (backend && backend.browseGamePath) {
+                backend.browseGamePath();
+            } else {
+                alert('Функция доступна только в Python-приложении');
+            }
+        }
+
+        // ЗАГРУЗКА МОДОВ С GITHUB
         fetch(MODS_JSON)
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -253,20 +475,18 @@
             })
             .then(data => {
                 console.log('JSON загружен:', data);
-                // Проверяем структуру JSON
                 if (data.mods && Array.isArray(data.mods)) {
                     renderMods(data.mods);
                 } else {
-                    throw new Error('Неверная структура JSON (нет массива mods)');
+                    throw new Error('Неверная структура JSON');
                 }
             })
             .catch(err => {
-                console.error('Ошибка загрузки:', err);
+                console.error('Ошибка:', err);
                 document.getElementById('grid').innerHTML = 
                     `<div class="error">
                         <i class="fas fa-exclamation-triangle"></i> 
-                        Ошибка загрузки модов: ${err.message}
-                        <br><br>Проверьте URL: <a href="${MODS_JSON}" target="_blank" style="color:#fff">${MODS_JSON}</a>
+                        Ошибка загрузки: ${err.message}
                     </div>`;
             });
 
@@ -275,12 +495,11 @@
             grid.innerHTML = '';
 
             if (mods.length === 0) {
-                grid.innerHTML = '<div class="loading">Моды не найдены в репозитории</div>';
+                grid.innerHTML = '<div class="loading">Моды не найдены</div>';
                 return;
             }
 
             mods.forEach(mod => {
-                // Формируем полные URL
                 const dataFileUrl = REPO_ROOT + mod.dataFile;
                 const previewUrl = mod.preview.startsWith('http') 
                     ? mod.preview 
@@ -311,51 +530,58 @@
             console.log(`Отрендерено ${mods.length} модов`);
         }
 
-        // 2. Подключение к Python через WebChannel
+        // ПОДКЛЮЧЕНИЕ К PYTHON
         document.addEventListener("DOMContentLoaded", () => {
             if (typeof QWebChannel !== 'undefined' && typeof qt !== 'undefined') {
                 new QWebChannel(qt.webChannelTransport, (channel) => {
                     backend = channel.objects.backend;
                     
-                    // Обновление UI
                     const connStatus = document.getElementById('conn-status');
                     connStatus.innerText = "Подключено";
                     connStatus.classList.add('status-connected');
                     
                     console.log('WebChannel подключен');
                     
-                    // Запрос пути к игре
                     if (backend.requestGamePath) {
                         backend.requestGamePath();
                     }
                 });
-            } else {
-                console.warn('QWebChannel недоступен (открыто в браузере)');
             }
         });
 
-        // 3. Установка мода
+        // УСТАНОВКА МОДА
         function install(url, modName) {
-            console.log('Установка мода:', modName, url);
+            console.log('Установка:', modName);
             
             if (backend && backend.doInstall) {
                 backend.doInstall(url);
             } else {
-                alert("⚠️ Запустите через Python-программу!\n\nСайт должен открываться через launcher (main.py)");
+                // НЕ ПОКАЗЫВАЕМ ALERT - это решит проблему!
+                console.warn('Backend недоступен');
             }
         }
 
-        // 4. Обновление статуса игры (вызывается из Python)
+        // ОБНОВЛЕНИЕ СТАТУСА ИГРЫ (вызывается из Python)
         function setGameStatus(path) {
             const el = document.getElementById('game-status');
+            const pathInput = document.getElementById('game-path-input');
+            
             if (path && path !== '') {
                 el.innerText = "Найдена";
                 el.classList.add('status-found');
+                pathInput.value = path;
             } else {
                 el.innerText = "Не найдена";
                 el.style.color = "#ff6b6b";
+                pathInput.value = "";
             }
             console.log('Путь к игре:', path);
+        }
+
+        // ОБНОВЛЕНИЕ ПУТИ (вызывается из Python после выбора)
+        function updateGamePath(path) {
+            document.getElementById('game-path-input').value = path;
+            setGameStatus(path);
         }
     </script>
 </body>
