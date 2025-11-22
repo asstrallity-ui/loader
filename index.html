@@ -75,6 +75,83 @@
         .info-section { background: #0f0f0f; border: 1px solid #1a1a1a; border-radius: 16px; padding: 24px; }
         .info-section h2 { font-size: 20px; margin-bottom: 12px; }
         .info-section p { font-size: 14px; color: #808080; line-height: 1.6; margin-bottom: 8px; }
+        
+        /* МОДАЛЬНОЕ ОКНО */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-overlay.show { display: flex; }
+        
+        .modal {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-icon {
+            width: 56px; height: 56px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+        
+        .modal-icon.success { background: rgba(76, 175, 80, 0.2); color: #4CAF50; }
+        .modal-icon.error { background: rgba(244, 67, 54, 0.2); color: #F44336; }
+        .modal-icon.warning { background: rgba(255, 152, 0, 0.2); color: #FF9800; }
+        .modal-icon.info { background: rgba(33, 150, 243, 0.2); color: #2196F3; }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        
+        .modal-message {
+            font-size: 14px;
+            color: #808080;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ffffff;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-btn:hover {
+            background: #f0f0f0;
+            transform: scale(1.02);
+        }
     </style>
 </head>
 <body>
@@ -110,6 +187,17 @@
             </div>
         </div>
     </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-icon" id="modal-icon">✓</div>
+            <div class="modal-title" id="modal-title">Заголовок</div>
+            <div class="modal-message" id="modal-message">Сообщение</div>
+            <button class="modal-btn" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
     <script>
         const MODS_URL = 'https://raw.githubusercontent.com/asstrallity-ui/mods/main/mods.json';
         
@@ -143,6 +231,33 @@
             `).join('');
         }
         
+        // ФУНКЦИЯ ПОКАЗА МОДАЛЬНОГО ОКНА (вызывается из Python)
+        window.showModal = function(type, title, message) {
+            const modal = document.getElementById('modal');
+            const icon = document.getElementById('modal-icon');
+            const titleEl = document.getElementById('modal-title');
+            const messageEl = document.getElementById('modal-message');
+            
+            // Иконки
+            const icons = {
+                success: '✓',
+                error: '✗',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+            
+            icon.textContent = icons[type] || 'ℹ';
+            icon.className = 'modal-icon ' + type;
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            
+            modal.classList.add('show');
+        };
+        
+        window.closeModal = function() {
+            document.getElementById('modal').classList.remove('show');
+        };
+        
         document.querySelectorAll('.tab').forEach(t => {
             t.onclick = function() {
                 document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
@@ -150,6 +265,15 @@
                 this.classList.add('active');
                 document.getElementById(this.dataset.tab + '-tab').classList.add('active');
             };
+        });
+        
+        document.addEventListener('click', e => {
+            if (e.target.classList.contains('install-btn')) {
+                window.clickedModFile = e.target.getAttribute('data-file');
+            }
+            if (e.target.id === 'change-path-btn') {
+                window.changePathClicked = true;
+            }
         });
         
         window.addEventListener('DOMContentLoaded', loadMods);
