@@ -94,12 +94,82 @@
         .mod-name { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
         .mod-description { font-size: 14px; color: #808080; line-height: 1.5; margin-bottom: 16px; }
         .mod-meta { display: flex; justify-content: space-between; font-size: 12px; color: #606060; margin-bottom: 16px; }
+        
         .install-btn {
-            width: 100%; padding: 12px; background: #ffffff; color: #0a0a0a;
-            border: none; border-radius: 12px; font-size: 14px; font-weight: 600;
-            cursor: pointer; transition: all 0.2s ease;
+            width: 100%; 
+            padding: 12px; 
+            background: #ffffff; 
+            color: #0a0a0a;
+            border: none; 
+            border-radius: 12px; 
+            font-size: 14px; 
+            font-weight: 600;
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .install-btn:hover { background: #f0f0f0; transform: scale(1.02); }
+        
+        .install-btn:hover { 
+            background: #f0f0f0; 
+            transform: scale(1.02); 
+        }
+        
+        .install-btn.installing {
+            background: #e0e0e0;
+            color: #666666;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .install-btn.installing:hover {
+            transform: none;
+        }
+        
+        .progress-container {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .progress-container.active {
+            display: flex;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #1a1a1a;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4A90E2, #5BA3F5);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #1a1a1a;
+            border-top-color: #4A90E2;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        
+        .progress-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            min-width: 45px;
+            text-align: right;
+        }
         
         .settings-section {
             background: rgba(15, 15, 15, 0.95);
@@ -446,6 +516,7 @@
                 about_license: 'Лицензия',
                 about_repo: 'Репозиторий',
                 install_btn: 'Установить',
+                installing: 'Установка...',
                 game_found: 'Игра найдена'
             },
             en: {
@@ -477,6 +548,7 @@
                 about_license: 'License',
                 about_repo: 'Repository',
                 install_btn: 'Install',
+                installing: 'Installing...',
                 game_found: 'Game Found'
             }
         };
@@ -494,7 +566,9 @@
                 btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
             });
             document.querySelectorAll('.install-btn').forEach(btn => {
-                if (btn.getAttribute('data-file')) btn.textContent = translations[lang].install_btn;
+                if (btn.getAttribute('data-file') && !btn.classList.contains('installing')) {
+                    btn.textContent = translations[lang].install_btn;
+                }
             });
         }
         
@@ -516,14 +590,23 @@
                 c.innerHTML = '<div style="text-align:center;color:#808080;padding:80px">Нет модов</div>';
                 return;
             }
-            c.innerHTML = mods.map(m => `
+            c.innerHTML = mods.map((m, index) => `
                 <div class="mod-card">
                     <img class="mod-preview" src="${m.preview}" alt="${m.name}">
                     <div class="mod-info">
                         <div class="mod-name">${m.name}</div>
                         <div class="mod-description">${m.description}</div>
                         <div class="mod-meta"><span>v${m.version}</span><span>${m.author}</span></div>
-                        <button class="install-btn" data-file="${m.dataFile}">${translations[currentLang].install_btn}</button>
+                        <button class="install-btn" data-file="${m.dataFile}" data-index="${index}">
+                            ${translations[currentLang].install_btn}
+                        </button>
+                        <div class="progress-container" id="progress-${index}">
+                            <div class="progress-spinner"></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill-${index}"></div>
+                            </div>
+                            <div class="progress-text" id="progress-text-${index}">0%</div>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -554,6 +637,27 @@
             });
         };
         
+        window.setInstallProgress = function(index, progress) {
+            const progressContainer = document.getElementById(`progress-${index}`);
+            const progressFill = document.getElementById(`progress-fill-${index}`);
+            const progressText = document.getElementById(`progress-text-${index}`);
+            const btn = document.querySelector(`[data-index="${index}"]`);
+            
+            if (progress === 0) {
+                progressContainer.classList.add('active');
+                btn.classList.add('installing');
+                btn.textContent = translations[currentLang].installing;
+            } else if (progress >= 100) {
+                progressContainer.classList.remove('active');
+                btn.classList.remove('installing');
+                btn.textContent = translations[currentLang].install_btn;
+                progressFill.style.width = '0%';
+            } else {
+                progressFill.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '%';
+            }
+        };
+        
         document.querySelectorAll('.tab').forEach(t => {
             t.onclick = function() {
                 document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
@@ -576,7 +680,10 @@
         });
         
         document.addEventListener('click', e => {
-            if (e.target.classList.contains('install-btn')) window.clickedModFile = e.target.getAttribute('data-file');
+            if (e.target.classList.contains('install-btn') && !e.target.classList.contains('installing')) {
+                window.clickedModFile = e.target.getAttribute('data-file');
+                window.clickedModIndex = parseInt(e.target.getAttribute('data-index'));
+            }
             if (e.target.id === 'change-path-btn') window.changePathClicked = true;
             if (e.target.id === 'find-game-btn') window.findGameClicked = true;
         });
