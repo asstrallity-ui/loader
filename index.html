@@ -575,7 +575,7 @@
                 <h3><i class="fab fa-github"></i> Репозиторий модов</h3>
                 <div class="setting-item">
                     <label>GitHub репозиторий:</label>
-                    <input type="text" id="repo-input" value="asstrallity-ui/Loader_Blitz" readonly>
+                    <input type="text" id="repo-input" value="asstrallity-ui/Tanks_Blitz_Mods_Files" readonly>
                 </div>
             </div>
         </div>
@@ -631,8 +631,9 @@
     </div>
 
     <script>
+        // ПРАВИЛЬНЫЙ РЕПОЗИТОРИЙ
         const REPO_OWNER = "asstrallity-ui";
-        const REPO_NAME = "Loader_Blitz";
+        const REPO_NAME = "Tanks_Blitz_Mods_Files";
         const BRANCH = "main";
         const REPO_ROOT = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/`;
         const MODS_JSON = REPO_ROOT + "mods.json";
@@ -707,10 +708,12 @@
             })
             .then(data => {
                 console.log('JSON загружен:', data);
-                if (data.mods && Array.isArray(data.mods)) {
-                    renderMods(data.mods);
+                // Поддержка двух форматов: массив напрямую или объект с ключом mods
+                var modsArray = Array.isArray(data) ? data : (data.mods || []);
+                if (modsArray.length > 0) {
+                    renderMods(modsArray);
                 } else {
-                    throw new Error('Неверная структура JSON');
+                    throw new Error('Моды не найдены в JSON');
                 }
             })
             .catch(err => {
@@ -732,10 +735,12 @@
             }
 
             mods.forEach(function(mod) {
-                var dataFileUrl = REPO_ROOT + mod.dataFile;
-                var previewUrl = mod.preview.startsWith('http') 
-                    ? mod.preview 
-                    : REPO_ROOT + mod.preview;
+                // Поддержка разных полей: file/dataFile для архива, image/preview для превью
+                var fileUrl = mod.file || mod.dataFile;
+                var imageUrl = mod.image || mod.preview;
+                
+                var dataFileUrl = fileUrl.startsWith('http') ? fileUrl : REPO_ROOT + fileUrl;
+                var previewUrl = imageUrl.startsWith('http') ? imageUrl : REPO_ROOT + imageUrl;
 
                 var card = document.createElement('div');
                 card.className = 'mod-card';
