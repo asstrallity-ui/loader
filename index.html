@@ -283,24 +283,98 @@
             margin-bottom: 15px;
         }
 
+        /* ОБНОВЛЕННЫЙ СТАТУС-БОКС */
         .status-box { 
             margin-top: auto; 
-            font-size: 12px; 
-            color: #808080; 
-            border-top: 1px solid #2d2d2d; 
-            padding-top: 15px; 
+            padding: 18px 15px;
+            background: #0d0d0d;
+            border-radius: 12px;
+            border: 1px solid #2d2d2d;
         }
-        
-        .status-box > div {
-            margin-bottom: 8px;
+
+        .status-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            transition: all 0.3s;
         }
-        
-        .status-val { 
-            color: #a0a0a0;
+
+        .status-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-item:hover {
+            background: #202020;
+        }
+
+        .status-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #252525;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #808080;
+        }
+
+        .status-info {
+            flex: 1;
+        }
+
+        .status-label {
+            font-size: 11px;
+            color: #808080;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .status-value {
+            font-size: 13px;
             font-weight: 500;
+            color: #b0b0b0;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #404040;
+            position: relative;
+        }
+
+        .status-indicator.active {
+            background: #6bcb77;
+            box-shadow: 0 0 12px rgba(107, 203, 119, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.error {
+            background: #ff6b6b;
+            box-shadow: 0 0 12px rgba(255, 107, 107, 0.6);
+        }
+
+        .status-indicator.searching {
+            background: #ffa500;
+            box-shadow: 0 0 12px rgba(255, 165, 0, 0.6);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
         }
         
         h2 {
@@ -537,14 +611,28 @@
             </button>
         </div>
 
+        <!-- ОБНОВЛЕННЫЙ СТАТУС-БОКС -->
         <div class="status-box">
-            <div>
-                <i class="fas fa-plug"></i> 
-                Связь: <span id="conn-status" class="status-val">Нет</span>
+            <div class="status-item">
+                <div class="status-icon">
+                    <i class="fas fa-plug"></i>
+                </div>
+                <div class="status-info">
+                    <div class="status-label">Связь</div>
+                    <div class="status-value" id="conn-status">Нет</div>
+                </div>
+                <div class="status-indicator" id="conn-indicator"></div>
             </div>
-            <div>
-                <i class="fas fa-gamepad"></i> 
-                Игра: <span id="game-status" class="status-val">Поиск...</span>
+            
+            <div class="status-item">
+                <div class="status-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <div class="status-info">
+                    <div class="status-label">Игра</div>
+                    <div class="status-value" id="game-status">Поиск...</div>
+                </div>
+                <div class="status-indicator searching" id="game-indicator"></div>
             </div>
         </div>
     </div>
@@ -631,14 +719,12 @@
     </div>
 
     <script>
-        // ПРАВИЛЬНЫЙ РЕПОЗИТОРИЙ
         const REPO_OWNER = "asstrallity-ui";
         const REPO_NAME = "Tanks_Blitz_Mods_Files";
         const BRANCH = "main";
         const REPO_ROOT = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/`;
         const MODS_JSON = REPO_ROOT + "mods.json";
 
-        // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
@@ -652,7 +738,6 @@
             event.target.classList.add('active');
         }
 
-        // МОДАЛЬНОЕ ОКНО
         function showModal() {
             document.getElementById('installModal').classList.add('show');
             resetModal();
@@ -700,7 +785,6 @@
             icon.className = 'fas fa-exclamation-circle';
         }
 
-        // ЗАГРУЗКА МОДОВ
         fetch(MODS_JSON)
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -708,7 +792,6 @@
             })
             .then(data => {
                 console.log('JSON загружен:', data);
-                // Поддержка двух форматов: массив напрямую или объект с ключом mods
                 var modsArray = Array.isArray(data) ? data : (data.mods || []);
                 if (modsArray.length > 0) {
                     renderMods(modsArray);
@@ -735,7 +818,6 @@
             }
 
             mods.forEach(function(mod) {
-                // Поддержка разных полей: file/dataFile для архива, image/preview для превью
                 var fileUrl = mod.file || mod.dataFile;
                 var imageUrl = mod.image || mod.preview;
                 
@@ -767,13 +849,40 @@
             console.log(`Отрендерено ${mods.length} модов`);
         }
 
-        // ФУНКЦИИ ДЛЯ PYTHON
         function install(url, name) {
             console.log('INSTALL_MOD:' + url);
         }
 
         function browseGamePath() {
             console.log('BROWSE_PATH');
+        }
+
+        // Функция для обновления статуса связи (вызывается из Python)
+        function updateConnectionStatus(connected) {
+            var connStatus = document.getElementById('conn-status');
+            var connIndicator = document.getElementById('conn-indicator');
+            
+            if (connected) {
+                connStatus.textContent = 'Активно';
+                connIndicator.className = 'status-indicator active';
+            } else {
+                connStatus.textContent = 'Нет';
+                connIndicator.className = 'status-indicator error';
+            }
+        }
+
+        // Функция для обновления статуса игры (вызывается из Python)
+        function updateGameStatus(found, path) {
+            var gameStatus = document.getElementById('game-status');
+            var gameIndicator = document.getElementById('game-indicator');
+            
+            if (found) {
+                gameStatus.textContent = 'Найдена';
+                gameIndicator.className = 'status-indicator active';
+            } else {
+                gameStatus.textContent = 'Не найдена';
+                gameIndicator.className = 'status-indicator error';
+            }
         }
     </script>
 </body>
