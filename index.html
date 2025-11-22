@@ -519,9 +519,9 @@
                             ${mod.author || 'Неизвестен'}
                         </div>
                         <div class="mod-desc">${mod.description || 'Нет описания'}</div>
-                        <button class="btn" onclick="install('${dataFileUrl}', '${mod.name}')">
-                            <i class="fas fa-download"></i> УСТАНОВИТЬ
-                        </button>
+                            <button class="btn" data-url="${dataFileUrl}" data-name="${mod.name}" onclick="install('${dataFileUrl}', '${mod.name}')">
+                                <i class="fas fa-download"></i> УСТАНОВИТЬ
+                            </button>
                     </div>
                 `;
                 grid.appendChild(card);
