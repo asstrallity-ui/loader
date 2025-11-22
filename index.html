@@ -18,55 +18,21 @@
             position: relative;
         }
         
-        /* АНИМИРОВАННЫЙ ФОН */
+        /* ЛЕГКИЙ СТАТИЧНЫЙ ФОН (без анимации и blur) */
         .background-glow {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             pointer-events: none;
             z-index: 0;
-            overflow: hidden;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(74, 144, 226, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(155, 89, 182, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(231, 76, 60, 0.06) 0%, transparent 50%);
         }
         
-        .glow-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.15;
-            animation: float 20s infinite ease-in-out;
-        }
-        
-        .glow-orb:nth-child(1) {
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, #4A90E2, transparent);
-            top: -200px; left: -200px;
-            animation-delay: 0s;
-        }
-        
-        .glow-orb:nth-child(2) {
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, #9B59B6, transparent);
-            bottom: -250px; right: -250px;
-            animation-delay: -7s;
-        }
-        
-        .glow-orb:nth-child(3) {
-            width: 350px; height: 350px;
-            background: radial-gradient(circle, #E74C3C, transparent);
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -14s;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(50px, -50px) scale(1.1); }
-            66% { transform: translate(-50px, 50px) scale(0.9); }
-        }
-        
-        /* ОСНОВНОЙ КОНТЕНТ */
         .top-bar {
-            background: rgba(15, 15, 15, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(8px);
             border-bottom: 1px solid #1a1a1a;
             padding: 0 32px;
             display: flex;
@@ -99,11 +65,11 @@
         .content::-webkit-scrollbar-track { background: transparent; }
         .content::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 4px; }
         
-        .tab-content { display: none; max-width: 1400px; margin: 0 auto; animation: fadeIn 0.4s ease; }
+        .tab-content { display: none; max-width: 1400px; margin: 0 auto; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
@@ -117,12 +83,11 @@
         
         .mods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
         .mod-card {
-            background: rgba(15, 15, 15, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 15, 15, 0.95);
             border: 1px solid #1a1a1a;
             border-radius: 16px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
         .mod-card:hover { transform: translateY(-4px); border-color: #2a2a2a; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); }
         .mod-preview { width: 100%; height: 220px; object-fit: cover; background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%); }
@@ -133,14 +98,12 @@
         .install-btn {
             width: 100%; padding: 12px; background: #ffffff; color: #0a0a0a;
             border: none; border-radius: 12px; font-size: 14px; font-weight: 600;
-            cursor: pointer; transition: all 0.3s ease;
+            cursor: pointer; transition: all 0.2s ease;
         }
         .install-btn:hover { background: #f0f0f0; transform: scale(1.02); }
         
-        /* НАСТРОЙКИ */
         .settings-section {
-            background: rgba(15, 15, 15, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 15, 15, 0.95);
             border: 1px solid #1a1a1a;
             border-radius: 16px;
             padding: 24px;
@@ -250,12 +213,11 @@
             color: #ffffff;
         }
         
-        /* МОДАЛЬНОЕ ОКНО */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -270,11 +232,11 @@
             max-width: 400px;
             width: 90%;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-            animation: slideUp 0.3s ease;
+            animation: slideUp 0.25s ease;
         }
         
         @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
+            from { transform: translateY(15px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
         
@@ -323,12 +285,8 @@
     </style>
 </head>
 <body>
-    <!-- АНИМИРОВАННЫЙ ФОН -->
-    <div class="background-glow">
-        <div class="glow-orb"></div>
-        <div class="glow-orb"></div>
-        <div class="glow-orb"></div>
-    </div>
+    <!-- ЛЕГКИЙ СТАТИЧНЫЙ ФОН -->
+    <div class="background-glow"></div>
 
     <div class="top-bar">
         <div class="logo">ASSTRALLITY</div>
@@ -340,15 +298,12 @@
     </div>
     
     <div class="content">
-        <!-- МОДЫ -->
         <div class="tab-content active" id="mods-tab">
             <div class="loading"><div class="spinner"></div><div data-i18n="loading_mods">Загрузка списка модов...</div></div>
             <div class="mods-grid" id="mods-container"></div>
         </div>
 
-        <!-- НАСТРОЙКИ -->
         <div class="tab-content" id="settings-tab">
-            <!-- Язык -->
             <div class="settings-section">
                 <h2>🌐 <span data-i18n="lang_title">Язык / Language</span></h2>
                 <div class="lang-switcher">
@@ -357,14 +312,12 @@
                 </div>
             </div>
 
-            <!-- Поиск игры -->
             <div class="settings-section">
                 <h2>🎮 <span data-i18n="game_search_title">Поиск игры</span></h2>
                 <p class="section-desc" data-i18n="game_search_desc">Автоматический поиск World of Tanks Blitz</p>
                 <button class="setting-btn primary" id="find-game-btn" data-i18n="find_game_btn">Найти игру</button>
             </div>
 
-            <!-- Пути -->
             <div class="settings-section">
                 <h2>📂 <span data-i18n="paths_title">Пути</span></h2>
                 
@@ -385,7 +338,6 @@
             </div>
         </div>
 
-        <!-- О ПРОГРАММЕ -->
         <div class="tab-content" id="about-tab">
             <div class="settings-section">
                 <h2>ℹ️ <span data-i18n="about_title">О программе</span></h2>
@@ -427,7 +379,6 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО -->
     <div class="modal-overlay" id="modal">
         <div class="modal">
             <div class="modal-icon" id="modal-icon">✓</div>
