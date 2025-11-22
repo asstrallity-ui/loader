@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asstrallity Loader</title>
     <style>
-        /* Черно-белый минималистичный дизайн */
+        /* === ЧЕРНО-БЕЛЫЙ МИНИМАЛИСТИЧНЫЙ ДИЗАЙН === */
         :root {
             --bg-primary: #0a0a0a;
             --bg-secondary: #1a1a1a;
@@ -30,10 +30,8 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
-        /* Header */
         .header {
             padding: 20px 0;
             border-bottom: 1px solid var(--border-color);
@@ -75,14 +73,12 @@
             border-color: var(--text-primary);
         }
 
-        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* Tabs */
         .tabs {
             display: flex;
             gap: 8px;
@@ -110,7 +106,6 @@
             border-bottom-color: var(--text-primary);
         }
 
-        /* Tab Content */
         .tab-content {
             display: none;
         }
@@ -125,7 +120,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Loading */
         .loading-container {
             text-align: center;
             padding: 60px 20px;
@@ -145,7 +139,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Mods Grid */
         .mods-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -240,7 +233,6 @@
             animation: spin 0.6s linear infinite;
         }
 
-        /* Settings */
         .settings-section {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
@@ -322,7 +314,6 @@
             border-color: var(--border-hover);
         }
 
-        /* About */
         .about-section {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
@@ -352,7 +343,6 @@
             font-weight: 500;
         }
 
-        /* Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -438,7 +428,6 @@
             border-color: var(--border-hover);
         }
 
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -453,7 +442,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <div class="header-content">
             <div class="logo">ASSTRALLITY</div>
@@ -464,16 +452,13 @@
         </div>
     </div>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Tabs -->
         <div class="tabs">
             <button class="tab active" data-tab="mods">Моды</button>
             <button class="tab" data-tab="settings">Настройки</button>
             <button class="tab" data-tab="about">О программе</button>
         </div>
 
-        <!-- Mods Tab -->
         <div class="tab-content active" id="mods-tab">
             <div class="loading-container" id="loading">
                 <div class="loader"></div>
@@ -482,7 +467,6 @@
             <div class="mods-grid" id="mods-container"></div>
         </div>
 
-        <!-- Settings Tab -->
         <div class="tab-content" id="settings-tab">
             <div class="settings-section">
                 <h3>⚙️ Режим установки</h3>
@@ -519,7 +503,6 @@
             </div>
         </div>
 
-        <!-- About Tab -->
         <div class="tab-content" id="about-tab">
             <div class="about-section">
                 <h3 style="margin-bottom: 24px;">ℹ️ О программе</h3>
@@ -551,7 +534,6 @@
         </div>
     </div>
 
-    <!-- Modal -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
             <div class="modal-icon" id="modal-icon"></div>
@@ -562,7 +544,6 @@
     </div>
 
     <script>
-        // === ДАННЫЕ МОДОВ ===
         const modsData = [
             {
                 id: 1,
@@ -573,15 +554,12 @@
                 image: "https://via.placeholder.com/400x200/1a1a1a/ffffff?text=BZ-75+Divine+Valor",
                 file: "BZ75-Divine/Data.zip"
             }
-            // Добавьте больше модов здесь
         ];
 
-        // === ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===
         let currentLanguage = 'ru';
         let currentTab = 'mods';
         let installMode = 'data';
 
-        // === ЗАГРУЗКА МОДОВ ===
         function loadMods() {
             const container = document.getElementById('mods-container');
             const loading = document.getElementById('loading');
@@ -622,7 +600,6 @@
             }, 500);
         }
 
-        // === ТАБЫ ===
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 const tabName = this.getAttribute('data-tab');
@@ -637,7 +614,6 @@
             });
         });
 
-        // === РЕЖИМ УСТАНОВКИ ===
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const mode = this.getAttribute('data-mode');
@@ -652,7 +628,6 @@
             });
         });
 
-        // === МОДАЛЬНОЕ ОКНО ===
         function showModal(type, title, message) {
             const overlay = document.getElementById('modal-overlay');
             const icon = document.getElementById('modal-icon');
@@ -677,7 +652,6 @@
             document.getElementById('modal-overlay').classList.remove('active');
         }
 
-        // === ПРОГРЕСС УСТАНОВКИ ===
         function setInstallProgress(index, progress) {
             const buttons = document.querySelectorAll('.install-btn');
             if (buttons[index]) {
@@ -699,13 +673,11 @@
             }
         }
 
-        // === ОБНОВЛЕНИЕ ПУТЕЙ ===
         function updatePaths(dataPath, exePath, found) {
             document.getElementById('data-path').textContent = dataPath || 'Не задан';
             document.getElementById('exe-path').textContent = exePath || 'Не задан';
         }
 
-        // === ОБНОВЛЕНИЕ РЕЖИМА ===
         function updateInstallMode(mode) {
             installMode = mode;
             document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -717,25 +689,21 @@
             });
         }
 
-        // === ЗАКРЫТИЕ МОДАЛЬНОГО ОКНА ПРИ КЛИКЕ ВНЕ ===
         document.getElementById('modal-overlay').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
             }
         });
 
-        // === ЯЗЫК ===
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const lang = this.getAttribute('data-lang');
                 document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 currentLanguage = lang;
-                // Здесь можно добавить переключение языка
             });
         });
 
-        // === ИНИЦИАЛИЗАЦИЯ ===
         window.addEventListener('DOMContentLoaded', () => {
             loadMods();
             console.log('Asstrallity Loader initialized');
