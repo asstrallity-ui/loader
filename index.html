@@ -29,7 +29,7 @@
         .content::-webkit-scrollbar { width: 8px; }
         .content::-webkit-scrollbar-track { background: #0a0a0a; }
         .content::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 4px; }
-        .tab-content { display: none; max-width: 1400px; margin: 0 auto; animation: fadeIn 0.4s ease; }
+        .tab-content { display: none; max-width: 1000px; margin: 0 auto; animation: fadeIn 0.4s ease; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         .loading { text-align: center; padding: 120px 20px; color: #808080; }
@@ -57,24 +57,174 @@
         }
         .install-btn:hover { background: #f0f0f0; transform: scale(1.02); }
         .install-btn:disabled { background: #1a1a1a; color: #606060; cursor: not-allowed; }
-        .settings-section { background: #0f0f0f; border: 1px solid #1a1a1a; border-radius: 16px; padding: 24px; margin-bottom: 24px; }
-        .settings-section h2 { font-size: 20px; margin-bottom: 20px; }
-        .setting-label { display: block; font-size: 13px; color: #808080; margin-bottom: 8px; font-weight: 500; }
-        .setting-row { display: flex; gap: 12px; }
+        
+        /* НАСТРОЙКИ */
+        .settings-header {
+            margin-bottom: 32px;
+        }
+        .settings-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .settings-header p {
+            color: #808080;
+            font-size: 14px;
+        }
+        
+        .settings-section {
+            background: #0f0f0f;
+            border: 1px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .settings-section h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .settings-section .section-icon {
+            font-size: 20px;
+        }
+        
+        .settings-section .section-desc {
+            font-size: 13px;
+            color: #606060;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .setting-item {
+            margin-bottom: 20px;
+        }
+        
+        .setting-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .setting-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        
+        .setting-sublabel {
+            display: block;
+            font-size: 12px;
+            color: #606060;
+            margin-bottom: 8px;
+        }
+        
+        .setting-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
         .setting-input {
-            flex: 1; padding: 12px 16px; background: #0a0a0a;
-            border: 1px solid #1a1a1a; border-radius: 12px; color: #ffffff;
-            font-size: 14px; outline: none;
+            flex: 1;
+            padding: 12px 16px;
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
         }
+        
+        .setting-input:focus {
+            border-color: #2a2a2a;
+        }
+        
         .setting-btn {
-            padding: 12px 24px; background: #1a1a1a; color: #ffffff;
-            border: 1px solid #2a2a2a; border-radius: 12px; font-size: 14px;
-            font-weight: 500; cursor: pointer; transition: all 0.2s ease;
+            padding: 12px 24px;
+            background: #1a1a1a;
+            color: #ffffff;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
         }
-        .setting-btn:hover { background: #2a2a2a; }
-        .info-section { background: #0f0f0f; border: 1px solid #1a1a1a; border-radius: 16px; padding: 24px; }
-        .info-section h2 { font-size: 20px; margin-bottom: 12px; }
-        .info-section p { font-size: 14px; color: #808080; line-height: 1.6; margin-bottom: 8px; }
+        
+        .setting-btn:hover {
+            background: #2a2a2a;
+        }
+        
+        .setting-btn.primary {
+            background: #ffffff;
+            color: #0a0a0a;
+            border: none;
+        }
+        
+        .setting-btn.primary:hover {
+            background: #f0f0f0;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #0a0a0a;
+            border-radius: 12px;
+        }
+        
+        .info-item-label {
+            font-size: 13px;
+            color: #808080;
+        }
+        
+        .info-item-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(76, 175, 80, 0.15);
+            color: #4CAF50;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-badge.inactive {
+            background: rgba(158, 158, 158, 0.15);
+            color: #9e9e9e;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+        
+        .divider {
+            height: 1px;
+            background: #1a1a1a;
+            margin: 20px 0;
+        }
         
         /* МОДАЛЬНОЕ ОКНО */
         .modal-overlay {
@@ -167,23 +317,89 @@
             <div class="loading"><div class="spinner"></div><div>Загрузка списка модов...</div></div>
             <div class="mods-grid" id="mods-container"></div>
         </div>
+
         <div class="tab-content" id="settings-tab">
+            <div class="settings-header">
+                <h1>Настройки</h1>
+                <p>Управление параметрами лоадера и путями установки</p>
+            </div>
+
+            <!-- Пути установки -->
             <div class="settings-section">
-                <h2>Путь установки</h2>
-                <div>
-                    <label class="setting-label">Папка для установки модов</label>
+                <h2><span class="section-icon">📂</span> Пути установки</h2>
+                <p class="section-desc">Укажите путь к папке Data игры World of Tanks Blitz. Все моды будут установлены в эту директорию.</p>
+                
+                <div class="setting-item">
+                    <label class="setting-label">Папка Data игры</label>
+                    <span class="setting-sublabel">Автоматически определяется при первом запуске</span>
                     <div class="setting-row">
-                        <input type="text" class="setting-input" id="path-display" readonly>
+                        <input type="text" class="setting-input" id="path-display" readonly placeholder="Путь не указан">
                         <button class="setting-btn" id="change-path-btn">Изменить</button>
                     </div>
                 </div>
+                
+                <div class="divider"></div>
+                
+                <div class="setting-item">
+                    <label class="setting-label">Исполняемый файл игры</label>
+                    <span class="setting-sublabel">Местоположение tanksblitz.exe (определяется автоматически)</span>
+                    <div class="setting-row">
+                        <input type="text" class="setting-input" id="exe-display" readonly placeholder="Не обнаружен">
+                    </div>
+                </div>
             </div>
-            <div class="info-section">
-                <h2>О программе</h2>
-                <p><strong>Asstrallity Loader</strong> — современный менеджер модов</p>
-                <p>Версия: 1.0.0</p>
-                <p>Разработчик: asstrallity-ui</p>
-                <p>GitHub: <a href="https://github.com/asstrallity-ui/mods" style="color: #fff;">asstrallity-ui/mods</a></p>
+
+            <!-- Информация о системе -->
+            <div class="settings-section">
+                <h2><span class="section-icon">💻</span> Информация о системе</h2>
+                <p class="section-desc">Данные о текущей конфигурации и состоянии программы</p>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-item-label">Статус игры</span>
+                        <span class="status-badge" id="game-status">
+                            <span class="status-dot"></span>
+                            <span>Не найдена</span>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Версия лоадера</span>
+                        <span class="info-item-value">1.0.0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Автопоиск</span>
+                        <span class="info-item-value" id="auto-detect-status">Выключен</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Установлено модов</span>
+                        <span class="info-item-value">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- О программе -->
+            <div class="settings-section">
+                <h2><span class="section-icon">ℹ️</span> О программе</h2>
+                <p class="section-desc">Asstrallity Loader — современный менеджер модов для World of Tanks Blitz с поддержкой автоустановки и удобным интерфейсом</p>
+                
+                <div class="divider"></div>
+                
+                <div class="setting-item">
+                    <label class="setting-label">Разработчик</label>
+                    <span class="info-item-value">asstrallity-ui</span>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-label">Репозиторий модов</label>
+                    <a href="https://github.com/asstrallity-ui/mods" target="_blank" style="color: #4A90E2; text-decoration: none; font-size: 14px;">
+                        github.com/asstrallity-ui/mods ↗
+                    </a>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-label">Лицензия</label>
+                    <span class="info-item-value">MIT License</span>
+                </div>
             </div>
         </div>
     </div>
@@ -231,20 +447,13 @@
             `).join('');
         }
         
-        // ФУНКЦИЯ ПОКАЗА МОДАЛЬНОГО ОКНА (вызывается из Python)
         window.showModal = function(type, title, message) {
             const modal = document.getElementById('modal');
             const icon = document.getElementById('modal-icon');
             const titleEl = document.getElementById('modal-title');
             const messageEl = document.getElementById('modal-message');
             
-            // Иконки
-            const icons = {
-                success: '✓',
-                error: '✗',
-                warning: '⚠',
-                info: 'ℹ'
-            };
+            const icons = { success: '✓', error: '✗', warning: '⚠', info: 'ℹ' };
             
             icon.textContent = icons[type] || 'ℹ';
             icon.className = 'modal-icon ' + type;
@@ -256,6 +465,25 @@
         
         window.closeModal = function() {
             document.getElementById('modal').classList.remove('show');
+        };
+        
+        // Обновление статуса игры из Python
+        window.updateGameStatus = function(found, exePath) {
+            const badge = document.getElementById('game-status');
+            const exeDisplay = document.getElementById('exe-display');
+            const autoDetect = document.getElementById('auto-detect-status');
+            
+            if (found) {
+                badge.innerHTML = '<span class="status-dot"></span><span>Найдена</span>';
+                badge.classList.remove('inactive');
+                exeDisplay.value = exePath;
+                autoDetect.textContent = 'Включен';
+            } else {
+                badge.innerHTML = '<span class="status-dot"></span><span>Не найдена</span>';
+                badge.classList.add('inactive');
+                exeDisplay.value = '';
+                autoDetect.textContent = 'Выключен';
+            }
         };
         
         document.querySelectorAll('.tab').forEach(t => {
