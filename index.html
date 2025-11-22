@@ -8,122 +8,354 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bower-qt-qwebchannel/5.15.0/qwebchannel.js"></script>
 
     <style>
-        /* Тот же красивый стиль */
-        body { background: #0e0f12; color: #fff; font-family: 'Roboto', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; user-select: none; }
-        .sidebar { width: 260px; background: #15161a; padding: 25px; display: flex; flex-direction: column; border-right: 1px solid #25262b; }
-        .logo { font-family: 'Rajdhani', sans-serif; font-size: 28px; color: #ff5500; margin-bottom: 40px; font-weight: bold; display: flex; align-items: center; gap: 10px; }
-        .content { flex: 1; padding: 30px; overflow-y: auto; }
+        /* Темно-серая цветовая схема с белым */
+        body { 
+            background: #121212; 
+            color: #ffffff; 
+            font-family: 'Roboto', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            height: 100vh; 
+            overflow: hidden; 
+            user-select: none; 
+        }
         
-        .mod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .mod-card { background: #1c1e24; border-radius: 10px; overflow: hidden; transition: 0.3s; border: 1px solid transparent; }
-        .mod-card:hover { transform: translateY(-5px); border-color: #ff5500; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .sidebar { 
+            width: 260px; 
+            background: #1a1a1a; 
+            padding: 25px; 
+            display: flex; 
+            flex-direction: column; 
+            border-right: 1px solid #2d2d2d; 
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+        }
         
-        .mod-img { width: 100%; height: 170px; object-fit: cover; background: #000; }
-        .mod-body { padding: 20px; }
-        .mod-title { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
-        .mod-desc { font-size: 13px; color: #888; height: 36px; overflow: hidden; margin-bottom: 15px; line-height: 1.4; }
+        .logo { 
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 28px; 
+            color: #ffffff; 
+            margin-bottom: 40px; 
+            font-weight: bold; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .logo i {
+            color: #e0e0e0;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+        }
+        
+        .content { 
+            flex: 1; 
+            padding: 30px; 
+            overflow-y: auto; 
+            background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+        }
+        
+        .content::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .content::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        .content::-webkit-scrollbar-thumb {
+            background: #404040;
+            border-radius: 5px;
+        }
+        
+        .content::-webkit-scrollbar-thumb:hover {
+            background: #525252;
+        }
+        
+        .mod-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 20px; 
+        }
+        
+        .mod-card { 
+            background: #1e1e1e; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            transition: all 0.3s ease; 
+            border: 1px solid #2d2d2d;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .mod-card:hover { 
+            transform: translateY(-5px); 
+            border-color: #6b6b6b; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        
+        .mod-img { 
+            width: 100%; 
+            height: 170px; 
+            object-fit: cover; 
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-bottom: 1px solid #2d2d2d;
+        }
+        
+        .mod-body { 
+            padding: 20px; 
+        }
+        
+        .mod-title { 
+            font-size: 18px; 
+            font-weight: bold; 
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+        
+        .mod-author {
+            font-size: 12px;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .mod-desc { 
+            font-size: 13px; 
+            color: #b0b0b0; 
+            height: 36px; 
+            overflow: hidden; 
+            margin-bottom: 15px; 
+            line-height: 1.4; 
+        }
         
         .btn { 
-            width: 100%; padding: 12px; border: none; border-radius: 6px; 
-            background: #ff5500; color: white; font-weight: bold; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: 0.2s; 
+            width: 100%; 
+            padding: 12px; 
+            border: none; 
+            border-radius: 8px; 
+            background: linear-gradient(135deg, #4a4a4a 0%, #2d2d2d 100%); 
+            color: white; 
+            font-weight: bold; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px;
+            transition: all 0.3s ease; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            border: 1px solid #525252;
         }
-        .btn:hover { background: #ff7722; }
-        .btn:active { transform: scale(0.98); }
+        
+        .btn:hover { 
+            background: linear-gradient(135deg, #5a5a5a 0%, #3d3d3d 100%);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .btn:active { 
+            transform: scale(0.98); 
+        }
 
         /* Статус */
-        .status-box { margin-top: auto; font-size: 12px; color: #666; border-top: 1px solid #25262b; padding-top: 15px; }
-        .status-val { color: #00ff88; }
+        .status-box { 
+            margin-top: auto; 
+            font-size: 12px; 
+            color: #808080; 
+            border-top: 1px solid #2d2d2d; 
+            padding-top: 15px; 
+        }
+        
+        .status-box > div {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-val { 
+            color: #a0a0a0;
+            font-weight: 500;
+        }
+        
+        .status-connected {
+            color: #b0b0b0 !important;
+        }
+        
+        .status-found {
+            color: #c0c0c0 !important;
+        }
+        
+        h2 {
+            font-family: 'Rajdhani', sans-serif; 
+            margin-bottom: 25px;
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .loading {
+            color: #808080;
+            font-size: 14px;
+        }
+        
+        .error {
+            color: #ff6b6b;
+            padding: 20px;
+            background: rgba(255,107,107,0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(255,107,107,0.3);
+        }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="logo"><i class="fas fa-cube"></i> ASSTRALLITY</div>
+        <div class="logo">
+            <i class="fas fa-cube"></i> ASSTRALLITY
+        </div>
         <div class="status-box">
-            <div>Связь с Python: <span id="conn-status" style="color:#555">Нет</span></div>
-            <div style="margin-top:5px">Игра: <span id="game-status">Поиск...</span></div>
+            <div>
+                <i class="fas fa-plug"></i> 
+                Связь: <span id="conn-status" class="status-val">Нет</span>
+            </div>
+            <div>
+                <i class="fas fa-gamepad"></i> 
+                Игра: <span id="game-status" class="status-val">Поиск...</span>
+            </div>
         </div>
     </div>
 
     <div class="content">
-        <h2 style="font-family:'Rajdhani'; margin-bottom:25px">ДОСТУПНЫЕ МОДЫ</h2>
+        <h2>ДОСТУПНЫЕ МОДЫ</h2>
         <div id="grid" class="mod-grid">
-            <div style="color:#666">Загрузка списка с GitHub...</div>
+            <div class="loading">Загрузка списка с GitHub...</div>
         </div>
     </div>
 
     <script>
         // НАСТРОЙКИ РЕПОЗИТОРИЯ
-        const REPO_ROOT = "https://raw.githubusercontent.com/asstrallity-ui/Tanks_Blitz_Mods_Files/main/";
+        const REPO_OWNER = "asstrallity-ui";
+        const REPO_NAME = "Loader_Blitz";
+        const BRANCH = "main";
+        const REPO_ROOT = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/`;
         const MODS_JSON = REPO_ROOT + "mods.json";
         
         let backend = null;
 
-        // 1. Сразу качаем JSON (сайт сам тянет)
+        // 1. Загрузка JSON с GitHub
         fetch(MODS_JSON)
-            .then(res => res.json())
-            .then(data => renderMods(data))
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json();
+            })
+            .then(data => {
+                console.log('JSON загружен:', data);
+                // Проверяем структуру JSON
+                if (data.mods && Array.isArray(data.mods)) {
+                    renderMods(data.mods);
+                } else {
+                    throw new Error('Неверная структура JSON (нет массива mods)');
+                }
+            })
             .catch(err => {
-                document.getElementById('grid').innerHTML = `<div style="color:red">Ошибка загрузки JSON: ${err}</div>`;
+                console.error('Ошибка загрузки:', err);
+                document.getElementById('grid').innerHTML = 
+                    `<div class="error">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        Ошибка загрузки модов: ${err.message}
+                        <br><br>Проверьте URL: <a href="${MODS_JSON}" target="_blank" style="color:#fff">${MODS_JSON}</a>
+                    </div>`;
             });
 
         function renderMods(mods) {
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
 
+            if (mods.length === 0) {
+                grid.innerHTML = '<div class="loading">Моды не найдены в репозитории</div>';
+                return;
+            }
+
             mods.forEach(mod => {
-                // Формируем полные ссылки
-                // Если в JSON путь "Mods/BZ...", то приклеиваем его к REPO_ROOT
-                const fileUrl = REPO_ROOT + mod.file; 
-                const imgUrl = mod.image.startsWith('http') ? mod.image : REPO_ROOT + mod.image;
+                // Формируем полные URL
+                const dataFileUrl = REPO_ROOT + mod.dataFile;
+                const previewUrl = mod.preview.startsWith('http') 
+                    ? mod.preview 
+                    : REPO_ROOT + mod.preview;
 
                 const card = document.createElement('div');
                 card.className = 'mod-card';
                 card.innerHTML = `
-                    <img src="${imgUrl}" class="mod-img" onerror="this.src='https://via.placeholder.com/300?text=Error'">
+                    <img src="${previewUrl}" 
+                         class="mod-img" 
+                         alt="${mod.name}"
+                         onerror="this.src='https://via.placeholder.com/300x170/2a2a2a/808080?text=No+Preview'">
                     <div class="mod-body">
                         <div class="mod-title">${mod.name}</div>
-                        <div class="mod-desc">${mod.description}</div>
-                        <button class="btn" onclick="install('${fileUrl}')">
+                        <div class="mod-author">
+                            <i class="fas fa-user"></i>
+                            ${mod.author || 'Неизвестен'}
+                        </div>
+                        <div class="mod-desc">${mod.description || 'Нет описания'}</div>
+                        <button class="btn" onclick="install('${dataFileUrl}', '${mod.name}')">
                             <i class="fas fa-download"></i> УСТАНОВИТЬ
                         </button>
                     </div>
                 `;
                 grid.appendChild(card);
             });
+
+            console.log(`Отрендерено ${mods.length} модов`);
         }
 
-        // 2. Подключаем Python для функционала
+        // 2. Подключение к Python через WebChannel
         document.addEventListener("DOMContentLoaded", () => {
-            if (typeof QWebChannel !== 'undefined') {
+            if (typeof QWebChannel !== 'undefined' && typeof qt !== 'undefined') {
                 new QWebChannel(qt.webChannelTransport, (channel) => {
                     backend = channel.objects.backend;
                     
-                    // UI обновления
-                    document.getElementById('conn-status').innerText = "Активно";
-                    document.getElementById('conn-status').style.color = "#00ff88";
+                    // Обновление UI
+                    const connStatus = document.getElementById('conn-status');
+                    connStatus.innerText = "Подключено";
+                    connStatus.classList.add('status-connected');
                     
-                    // Просим путь к игре (чисто для инфо)
-                    backend.requestGamePath();
+                    console.log('WebChannel подключен');
+                    
+                    // Запрос пути к игре
+                    if (backend.requestGamePath) {
+                        backend.requestGamePath();
+                    }
                 });
+            } else {
+                console.warn('QWebChannel недоступен (открыто в браузере)');
             }
         });
 
-        // 3. Отправляем прямую ссылку в Python
-        function install(url) {
-            if(backend) {
+        // 3. Установка мода
+        function install(url, modName) {
+            console.log('Установка мода:', modName, url);
+            
+            if (backend && backend.doInstall) {
                 backend.doInstall(url);
             } else {
-                alert("Запустите через Python-лаунчер!");
+                alert("⚠️ Запустите через Python-программу!\n\nСайт должен открываться через launcher (main.py)");
             }
         }
 
+        // 4. Обновление статуса игры (вызывается из Python)
         function setGameStatus(path) {
             const el = document.getElementById('game-status');
-            el.innerText = path ? "Найдена" : "Не найдена";
-            el.style.color = path ? "#00ff88" : "#ff3333";
+            if (path && path !== '') {
+                el.innerText = "Найдена";
+                el.classList.add('status-found');
+            } else {
+                el.innerText = "Не найдена";
+                el.style.color = "#ff6b6b";
+            }
+            console.log('Путь к игре:', path);
         }
     </script>
 </body>
