@@ -3,32 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Asstrallity Mods</title>
+
+    <!-- Шрифты и иконки -->
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
     <style>
-        body { 
-            background: #0f1419; 
-            color: #ffffff; 
-            font-family: 'Roboto', sans-serif; 
-            margin: 0; 
-            display: flex; 
-            height: 100vh; 
-            overflow: hidden; 
-            user-select: none; 
+        body {
+            background: #0f1419;
+            color: #ffffff;
+            font-family: "Roboto", sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
         }
-        
-        .sidebar { 
-            width: 260px; 
+
+        .sidebar {
+            width: 260px;
             background: linear-gradient(180deg, #151a21 0%, #0f1419 100%);
-            padding: 25px; 
-            display: flex; 
-            flex-direction: column; 
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
             border-right: 1px solid rgba(139, 182, 219, 0.15);
-            box-shadow: 2px 0 20px rgba(0,0,0,0.4);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.4);
             position: relative;
         }
 
-        /* СНЕЖИНКИ */
         .snowflake {
             position: absolute;
             color: rgba(139, 182, 219, 0.3);
@@ -54,21 +59,21 @@
                 opacity: 0;
             }
         }
-        
-        .logo { 
-            font-family: 'Rajdhani', sans-serif; 
-            font-size: 28px; 
-            color: #e8f4fa; 
-            margin-bottom: 30px; 
-            font-weight: bold; 
-            display: flex; 
-            align-items: center; 
+
+        .logo {
+            font-family: "Rajdhani", sans-serif;
+            font-size: 28px;
+            color: #e8f4fa;
+            margin-bottom: 30px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
             gap: 10px;
             text-shadow: 0 0 20px rgba(139, 182, 219, 0.4);
             position: relative;
             z-index: 1;
         }
-        
+
         .logo i {
             color: #8bb6db;
             filter: drop-shadow(0 0 10px rgba(139, 182, 219, 0.5));
@@ -114,16 +119,15 @@
             width: 20px;
             text-align: center;
         }
-        
-        .content { 
-            flex: 1; 
-            padding: 30px; 
-            overflow-y: auto; 
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
             background: linear-gradient(135deg, #0f1419 0%, #151a21 100%);
             position: relative;
         }
 
-        /* СНЕЖИНКИ В КОНТЕНТЕ */
         .content-snow {
             position: absolute;
             top: 0;
@@ -138,15 +142,15 @@
         .content-snow .snowflake {
             font-size: 12px;
         }
-        
+
         .content::-webkit-scrollbar {
             width: 8px;
         }
-        
+
         .content::-webkit-scrollbar-track {
             background: rgba(139, 182, 219, 0.05);
         }
-        
+
         .content::-webkit-scrollbar-thumb {
             background: rgba(139, 182, 219, 0.2);
             border-radius: 4px;
@@ -164,8 +168,14 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .content-header {
@@ -173,6 +183,16 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 25px;
+        }
+
+        .content-header h2 {
+            font-family: "Rajdhani", sans-serif;
+            margin: 0;
+            color: #e8f4fa;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(139, 182, 219, 0.3);
         }
 
         .refresh-btn {
@@ -187,7 +207,7 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
-            font-family: 'Roboto', sans-serif;
+            font-family: "Roboto", sans-serif;
             font-weight: 500;
         }
 
@@ -207,51 +227,55 @@
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
-        
-        .mod-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-            gap: 20px; 
+
+        .mod-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
-        
-        .mod-card { 
+
+        .mod-card {
             background: rgba(21, 26, 33, 0.6);
             backdrop-filter: blur(10px);
-            border-radius: 12px; 
-            overflow: hidden; 
-            transition: all 0.3s ease; 
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
             border: 1px solid rgba(139, 182, 219, 0.1);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
-        
-        .mod-card:hover { 
-            transform: translateY(-5px); 
+
+        .mod-card:hover {
+            transform: translateY(-5px);
             border-color: rgba(139, 182, 219, 0.3);
             box-shadow: 0 10px 30px rgba(139, 182, 219, 0.15);
         }
-        
-        .mod-img { 
-            width: 100%; 
-            height: 170px; 
-            object-fit: cover; 
+
+        .mod-img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
             background: linear-gradient(135deg, #1a2028 0%, #0f1419 100%);
             border-bottom: 1px solid rgba(139, 182, 219, 0.1);
         }
-        
-        .mod-body { 
-            padding: 20px; 
+
+        .mod-body {
+            padding: 20px;
         }
-        
-        .mod-title { 
-            font-size: 18px; 
-            font-weight: bold; 
+
+        .mod-title {
+            font-size: 18px;
+            font-weight: bold;
             margin-bottom: 8px;
             color: #e8f4fa;
         }
-        
+
         .mod-author {
             font-size: 12px;
             color: #7a8a9a;
@@ -260,42 +284,46 @@
             align-items: center;
             gap: 5px;
         }
-        
-        .mod-desc { 
-            font-size: 13px; 
-            color: #a0b0c0; 
-            height: 36px; 
-            overflow: hidden; 
-            margin-bottom: 15px; 
-            line-height: 1.4; 
+
+        .mod-author i {
+            font-size: 12px;
         }
-        
-        .btn { 
-            width: 100%; 
-            padding: 12px; 
-            border: none; 
-            border-radius: 8px; 
+
+        .mod-desc {
+            font-size: 13px;
+            color: #a0b0c0;
+            height: 36px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
             background: linear-gradient(135deg, rgba(139, 182, 219, 0.15) 0%, rgba(139, 182, 219, 0.08) 100%);
             color: #8bb6db;
-            font-weight: bold; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 8px;
-            transition: all 0.3s ease; 
+            transition: all 0.3s ease;
             border: 1px solid rgba(139, 182, 219, 0.2);
         }
-        
-        .btn:hover { 
+
+        .btn:hover {
             background: linear-gradient(135deg, rgba(139, 182, 219, 0.25) 0%, rgba(139, 182, 219, 0.15) 100%);
             border-color: rgba(139, 182, 219, 0.4);
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(139, 182, 219, 0.2);
         }
-        
-        .btn:active { 
-            transform: scale(0.98); 
+
+        .btn:active {
+            transform: scale(0.98);
         }
 
         .settings-section {
@@ -308,10 +336,13 @@
         }
 
         .settings-section h3 {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: "Rajdhani", sans-serif;
             font-size: 22px;
             margin-bottom: 20px;
             color: #e8f4fa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .setting-item {
@@ -333,7 +364,7 @@
             border-radius: 8px;
             color: #e8f4fa;
             font-size: 14px;
-            font-family: 'Roboto', sans-serif;
+            font-family: "Roboto", sans-serif;
         }
 
         .setting-item input[type="text"]:focus {
@@ -353,6 +384,7 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
+            font-size: 14px;
         }
 
         .btn-browse:hover {
@@ -371,7 +403,7 @@
         }
 
         .info-section h3 {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: "Rajdhani", sans-serif;
             font-size: 22px;
             margin-bottom: 15px;
             color: #e8f4fa;
@@ -382,8 +414,8 @@
             margin-bottom: 15px;
         }
 
-        .status-box { 
-            margin-top: auto; 
+        .status-box {
+            margin-top: auto;
             padding: 20px;
             background: rgba(21, 26, 33, 0.5);
             backdrop-filter: blur(10px);
@@ -438,22 +470,12 @@
             box-shadow: 0 0 15px rgba(255, 107, 107, 0.8);
             animation: none;
         }
-        
-        h2 {
-            font-family: 'Rajdhani', sans-serif; 
-            margin: 0;
-            color: #e8f4fa;
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-shadow: 0 0 20px rgba(139, 182, 219, 0.3);
-        }
-        
+
         .loading {
             color: #7a8a9a;
             font-size: 14px;
         }
-        
+
         .error {
             color: #ff6b6b;
             padding: 20px;
@@ -515,7 +537,7 @@
         }
 
         .modal-title {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: "Rajdhani", sans-serif;
             font-size: 22px;
             font-weight: 600;
             color: #e8f4fa;
@@ -561,7 +583,7 @@
             overflow: hidden;
             position: relative;
             margin-top: 15px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(139, 182, 219, 0.1);
         }
 
@@ -577,8 +599,12 @@
         }
 
         @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
         }
 
         .progress-text {
@@ -601,8 +627,14 @@
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .status-message.show {
@@ -654,409 +686,466 @@
             transform: translateY(-2px);
         }
 
-        .btn-install {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, rgba(139, 182, 219, 0.15) 0%, rgba(139, 182, 219, 0.08) 100%);
-            color: #8bb6db;
-            font-weight: bold;
-            cursor: pointer;
+        /* НОВОЕ: стили методов установки */
+
+        .install-methods {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .install-method-btn {
+            flex: 1 1 0;
+            padding: 12px 14px;
+            background: linear-gradient(135deg, rgba(139, 182, 219, 0.15) 0%, rgba(139, 182, 219, 0.08) 100%);
             border: 1px solid rgba(139, 182, 219, 0.2);
-            font-family: 'Roboto', sans-serif;
+            border-radius: 8px;
+            color: #a0b0c0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        .install-method-btn .method-title {
+            font-weight: 600;
+            color: #e8f4fa;
             font-size: 14px;
         }
 
-        .btn-install:hover {
+        .install-method-btn .method-desc {
+            font-size: 12px;
+        }
+
+        .install-method-btn.active {
+            border-color: #8bb6db;
             background: linear-gradient(135deg, rgba(139, 182, 219, 0.25) 0%, rgba(139, 182, 219, 0.15) 100%);
-            border-color: rgba(139, 182, 219, 0.4);
-            transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(139, 182, 219, 0.2);
         }
 
-        .btn-install:active {
-            transform: scale(0.98);
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 15px;
-            background: rgba(15, 20, 25, 0.6);
-            border: 1px solid rgba(139, 182, 219, 0.15);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .radio-option:hover {
+        .install-method-btn:hover {
+            transform: translateY(-2px);
             border-color: rgba(139, 182, 219, 0.4);
         }
 
-        .radio-option input[type="radio"] {
-            display: none;
-        }
-
-        .radio-text {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .install-method-note {
+            margin-top: 10px;
+            font-size: 13px;
             color: #a0b0c0;
-            font-size: 14px;
-            flex: 1;
         }
 
-        .radio-option input[type="radio"]:checked + .radio-text {
-            color: #e8f4fa;
-            font-weight: 500;
-        }
-
-        .radio-option input[type="radio"]:checked {
-            background: rgba(139, 182, 219, 0.2);
-            border-color: rgba(139, 182, 219, 0.4);
+        /* Скрытый input пути к игре для Python-части */
+        #game-path-input {
+            display: none;
         }
     </style>
 </head>
 <body>
+<div class="sidebar">
+    <!-- Снег на сайдбаре -->
+    <div class="snowflake" style="left: 10%; animation-duration: 15s; animation-delay: 0s;">*</div>
+    <div class="snowflake" style="left: 30%; animation-duration: 18s; animation-delay: 2s;">*</div>
+    <div class="snowflake" style="left: 50%; animation-duration: 20s; animation-delay: 4s;">*</div>
+    <div class="snowflake" style="left: 70%; animation-duration: 16s; animation-delay: 6s;">*</div>
+    <div class="snowflake" style="left: 85%; animation-duration: 19s; animation-delay: 8s;">*</div>
 
-    <div class="sidebar">
-        <!-- СНЕЖИНКИ В САЙДБАРЕ -->
-        <div class="snowflake" style="left: 10%; animation-duration: 15s; animation-delay: 0s;">❄</div>
-        <div class="snowflake" style="left: 30%; animation-duration: 18s; animation-delay: 2s;">❄</div>
-        <div class="snowflake" style="left: 50%; animation-duration: 20s; animation-delay: 4s;">❄</div>
-        <div class="snowflake" style="left: 70%; animation-duration: 16s; animation-delay: 6s;">❄</div>
-        <div class="snowflake" style="left: 85%; animation-duration: 19s; animation-delay: 8s;">❄</div>
+    <div class="logo">
+        <i class="fas fa-cube"></i>
+        ASSTRALLITY
+    </div>
 
-        <div class="logo">
-            <i class="fas fa-cube"></i> ASSTRALLITY
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('mods')">
+            <i class="fas fa-th-large"></i>
+            Моды
+        </button>
+        <button class="nav-tab" onclick="switchTab('settings')">
+            <i class="fas fa-cog"></i>
+            Настройки
+        </button>
+        <button class="nav-tab" onclick="switchTab('info')">
+            <i class="fas fa-info-circle"></i>
+            Информация
+        </button>
+    </div>
+
+    <div class="status-box">
+        <div class="status-line">
+            <div class="status-pulse" id="statusPulse"></div>
+            <div class="status-text disconnected" id="statusText">
+                Нет соединения с лаунчером
+            </div>
         </div>
+    </div>
+</div>
 
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('mods')">
-                <i class="fas fa-th-large"></i> Моды
-            </button>
-            <button class="nav-tab" onclick="switchTab('settings')">
-                <i class="fas fa-cog"></i> Настройки
-            </button>
-            <button class="nav-tab" onclick="switchTab('info')">
-                <i class="fas fa-info-circle"></i> Информация
+<div class="content">
+    <!-- Снег в контенте -->
+    <div class="content-snow">
+        <div class="snowflake" style="left: 5%; animation-duration: 17s; animation-delay: 0s;">*</div>
+        <div class="snowflake" style="left: 15%; animation-duration: 22s; animation-delay: 1s;">*</div>
+        <div class="snowflake" style="left: 25%; animation-duration: 19s; animation-delay: 3s;">*</div>
+        <div class="snowflake" style="left: 35%; animation-duration: 21s; animation-delay: 2s;">*</div>
+        <div class="snowflake" style="left: 45%; animation-duration: 18s; animation-delay: 5s;">*</div>
+        <div class="snowflake" style="left: 55%; animation-duration: 20s; animation-delay: 4s;">*</div>
+        <div class="snowflake" style="left: 65%; animation-duration: 23s; animation-delay: 6s;">*</div>
+        <div class="snowflake" style="left: 75%; animation-duration: 16s; animation-delay: 7s;">*</div>
+        <div class="snowflake" style="left: 85%; animation-duration: 19s; animation-delay: 2s;">*</div>
+        <div class="snowflake" style="left: 95%; animation-duration: 21s; animation-delay: 8s;">*</div>
+    </div>
+
+    <!-- ТАБ МОДОВ -->
+    <div id="tab-mods" class="tab-content active">
+        <div class="content-header">
+            <h2>ДОСТУПНЫЕ МОДЫ</h2>
+            <button class="refresh-btn" onclick="refreshMods()" id="refreshBtn">
+                <i class="fas fa-sync-alt"></i>
+                Обновить
             </button>
         </div>
+        <div id="grid" class="mod-grid">
+            <div class="loading">Загрузка списка с GitHub...</div>
+        </div>
+    </div>
 
-        <div class="status-box">
-            <div class="status-line">
-                <div class="status-pulse" id="statusPulse"></div>
-                <div class="status-text" id="statusText">Подключение...</div>
+    <!-- ТАБ НАСТРОЕК (ИЗМЕНЕН ПО ТВОЕМУ ЗАДАНИЮ) -->
+    <div id="tab-settings" class="tab-content">
+        <h2 style="margin-bottom: 25px;">НАСТРОЙКИ</h2>
+
+        <div class="settings-section">
+            <h3><i class="fas fa-cogs"></i> Метод установки модов</h3>
+            <div class="setting-item">
+                <label>Куда устанавливать моды</label>
+                <div class="install-methods">
+                    <button type="button"
+                            class="install-method-btn"
+                            id="installMethodSdls"
+                            onclick="setInstallMethod('sdls')">
+                        <span class="method-title">sDLS</span>
+                        <span class="method-desc">Документы / папка <code>packs</code></span>
+                    </button>
+                    <button type="button"
+                            class="install-method-btn"
+                            id="installMethodData"
+                            onclick="setInstallMethod('data')">
+                        <span class="method-title">Data</span>
+                        <span class="method-desc">Папка <code>Data</code> рядом с <code>tanksblitz.exe</code></span>
+                    </button>
+                </div>
+                <p class="install-method-note">
+                    Текущий метод: <span id="installMethodLabel"></span>
+                </p>
             </div>
         </div>
     </div>
 
-    <div class="content">
-        <!-- СНЕЖИНКИ В КОНТЕНТЕ -->
-        <div class="content-snow">
-            <div class="snowflake" style="left: 5%; animation-duration: 17s; animation-delay: 0s;">❄</div>
-            <div class="snowflake" style="left: 15%; animation-duration: 22s; animation-delay: 1s;">❄</div>
-            <div class="snowflake" style="left: 25%; animation-duration: 19s; animation-delay: 3s;">❄</div>
-            <div class="snowflake" style="left: 35%; animation-duration: 21s; animation-delay: 2s;">❄</div>
-            <div class="snowflake" style="left: 45%; animation-duration: 18s; animation-delay: 5s;">❄</div>
-            <div class="snowflake" style="left: 55%; animation-duration: 20s; animation-delay: 4s;">❄</div>
-            <div class="snowflake" style="left: 65%; animation-duration: 23s; animation-delay: 6s;">❄</div>
-            <div class="snowflake" style="left: 75%; animation-duration: 16s; animation-delay: 7s;">❄</div>
-            <div class="snowflake" style="left: 85%; animation-duration: 19s; animation-delay: 2s;">❄</div>
-            <div class="snowflake" style="left: 95%; animation-duration: 21s; animation-delay: 8s;">❄</div>
-        </div>
+    <!-- ТАБ ИНФОРМАЦИИ (КАК БЫЛО) -->
+    <div id="tab-info" class="tab-content">
+        <h2 style="margin-bottom: 25px;">ИНФОРМАЦИЯ</h2>
 
-        <div id="tab-mods" class="tab-content active">
-            <div class="content-header">
-                <h2>ДОСТУПНЫЕ МОДЫ</h2>
-                <button class="refresh-btn" onclick="refreshMods()" id="refreshBtn">
-                    <i class="fas fa-sync-alt"></i>
-                    Обновить
-                </button>
-            </div>
-            <div id="grid" class="mod-grid">
-                <div class="loading">Загрузка списка с GitHub...</div>
-            </div>
-        </div>
-
-        <div id="tab-settings" class="tab-content">
-            <h2 style="margin-bottom: 25px;">НАСТРОЙКИ</h2>
-
-            <div class="settings-section">
-                <h3><i class="fas fa-download"></i> Метод установки модов</h3>
-                <div class="setting-item">
-                    <div class="radio-group" style="display: flex; flex-direction: column; gap: 12px;">
-                        <label class="radio-option">
-                            <input type="radio" name="installMethod" value="sdls" id="sdlsOption" onchange="setInstallMethod('sdls')">
-                            <span class="radio-text"><i class="fas fa-folder"></i> sDLS - Установка мода в /Documents/packs</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="installMethod" value="nsdls" id="nsdlsOption" onchange="setInstallMethod('nsdls')">
-                            <span class="radio-text"><i class="fas fa-cube"></i> n-sDLS - Установка в /Data/tanksblitz.exe</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-info" class="tab-content">
-            <h2 style="margin-bottom: 25px;">ИНФОРМАЦИЯ</h2>
-            
-            <div class="info-section">
-                <h3>О программе</h3>
-                <p><strong>Asstrallity Mods Loader</strong> — удобный загрузчик модов для World of Tanks Blitz с современным интерфейсом.</p>
-                
-                <h3>Как использовать?</h3>
-                <p>1. Программа автоматически найдет папку игры<br>
-                2. Выберите нужный мод во вкладке "Моды"<br>
-                3. Нажмите кнопку "Установить"<br>
-                4. Мод будет автоматически скачан и установлен</p>
-                
-                <h3>Требования</h3>
-                <p>• Windows 10/11<br>
-                • World of Tanks Blitz<br>
-                • Интернет соединение</p>
-            </div>
+        <div class="info-section">
+            <h3>О программе</h3>
+            <p><strong>Asstrallity Mods Loader</strong> — удобный загрузчик модов для World of Tanks Blitz с современным интерфейсом.</p>
+            <h3>Как использовать?</h3>
+            <p>
+                1. Программа автоматически найдет папку игры.<br>
+                2. Выберите нужный мод во вкладке «Моды».<br>
+                3. Нажмите кнопку «Установить».<br>
+                4. Мод будет автоматически скачан и установлен.
+            </p>
+            <h3>Требования</h3>
+            <p>
+                Windows 10/11<br>
+                World of Tanks Blitz<br>
+                Интернет соединение
+            </p>
         </div>
     </div>
+</div>
 
-    <div id="installModal" class="modal-overlay">
-        <div class="modal-dialog">
-            <div class="modal-header">
-                <i class="fas fa-download"></i>
-                <div class="modal-title">Установка мода</div>
-                <button class="modal-close" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+<!-- Скрытый input для синхронизации пути с Python, если нужно -->
+<input type="text" id="game-path-input" readonly>
+
+<!-- МОДАЛКА УСТАНОВКИ -->
+<div id="installModal" class="modal-overlay">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <i class="fas fa-download"></i>
+            <div class="modal-title">Установка мода</div>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="modalMessage" class="modal-message">
+                Подготовка к установке мода...
             </div>
-            <div class="modal-body">
-                <div id="modalMessage" class="modal-message">
-                    Подготовка к установке...
-                </div>
-                <div class="progress-container">
-                    <div id="progressBar" class="progress-bar"></div>
-                </div>
-                <div id="progressText" class="progress-text">0%</div>
-                <div id="statusMessage" class="status-message">
-                    <i class="fas fa-check-circle"></i>
-                    <span id="statusText">Мод успешно установлен!</span>
-                </div>
+            <div class="progress-container">
+                <div id="progressBar" class="progress-bar"></div>
             </div>
-            <div class="modal-footer" id="modalFooter">
-                <button class="modal-btn" onclick="closeModal()">Закрыть</button>
+            <div id="progressText" class="progress-text">0%</div>
+
+            <div id="statusMessage" class="status-message">
+                <i class="fas fa-check-circle"></i>
+                <span id="statusText"></span>
             </div>
         </div>
+        <div class="modal-footer" id="modalFooter">
+            <button class="modal-btn" onclick="closeModal()">Закрыть</button>
+        </div>
     </div>
+</div>
 
-    <script>
-        const REPO_OWNER = "asstrallity-ui";
-        const REPO_NAME = "Tanks_Blitz_Mods_Files";
-        const BRANCH = "main";
-        const REPO_ROOT = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/`;
-        const MODS_JSON = REPO_ROOT + "mods.json";
+<script>
+    // Константы репозитория (как в исходнике)
+    const REPO_OWNER = "asstrallity-ui";
+    const REPO_NAME = "Tanks_Blitz_Mods_Files";
+    const BRANCH = "main";
+    const REPO_ROOT = "https://raw.githubusercontent.com/" + REPO_OWNER + "/" + REPO_NAME + "/" + BRANCH + "/";
+    const MODS_JSON = REPO_ROOT + "mods.json";
 
-        let isRefreshing = false;
+    let isRefreshing = false;
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.nav-tab').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            document.getElementById('tab-' + tabName).classList.add('active');
-            event.target.classList.add('active');
-        }
+    // Хранение метода установки
+    let currentInstallMethod = localStorage.getItem("installMethod") === "data" ? "data" : "sdls";
 
-        function showModal() {
-            document.getElementById('installModal').classList.add('show');
-            resetModal();
-        }
+    function switchTab(tabName) {
+        document.querySelectorAll(".tab-content").forEach(tab => {
+            tab.classList.remove("active");
+        });
+        document.querySelectorAll(".nav-tab").forEach(btn => {
+            btn.classList.remove("active");
+        });
 
-        function closeModal() {
-            document.getElementById('installModal').classList.remove('show');
-        }
+        const target = document.getElementById("tab-" + tabName);
+        if (target) target.classList.add("active");
 
-        function resetModal() {
-            document.getElementById('modalMessage').textContent = 'Подготовка к установке...';
-            document.getElementById('progressBar').style.width = '0%';
-            document.getElementById('progressText').textContent = '0%';
-            document.getElementById('statusMessage').classList.remove('show', 'success', 'error');
-            document.getElementById('modalFooter').classList.remove('show');
-        }
-
-        let selectedInstallMethod = 'sdls'; // По умолчанию sDLS
-
-        function updateProgress(percent, message) {
-            document.getElementById('progressBar').style.width = percent + '%';
-            document.getElementById('progressText').textContent = percent + '%';
-            if (message) {
-                document.getElementById('modalMessage').textContent = message;
+        // помечаем активную кнопку
+        const buttons = document.querySelectorAll(".nav-tab");
+        buttons.forEach(btn => {
+            if (btn.getAttribute("onclick") && btn.getAttribute("onclick").includes("'" + tabName + "'")) {
+                btn.classList.add("active");
             }
+        });
+    }
+
+    function showModal() {
+        document.getElementById("installModal").classList.add("show");
+        resetModal();
+    }
+
+    function closeModal() {
+        document.getElementById("installModal").classList.remove("show");
+    }
+
+    function resetModal() {
+        document.getElementById("modalMessage").textContent = "Подготовка к установке мода...";
+        document.getElementById("progressBar").style.width = "0%";
+        document.getElementById("progressText").textContent = "0%";
+        document.getElementById("statusMessage").classList.remove("show", "success", "error");
+        document.getElementById("modalFooter").classList.remove("show");
+    }
+
+    function updateProgress(percent, message) {
+        document.getElementById("progressBar").style.width = percent + "%";
+        document.getElementById("progressText").textContent = percent + "%";
+        if (message) {
+            document.getElementById("modalMessage").textContent = message;
         }
+    }
 
-        function showSuccess(message) {
-            var statusMsg = document.getElementById('statusMessage');
-            statusMsg.classList.add('show', 'success');
-            statusMsg.classList.remove('error');
-            document.getElementById('statusText').textContent = message;
-            document.getElementById('modalFooter').classList.add('show');
-            
-            var icon = statusMsg.querySelector('i');
-            icon.className = 'fas fa-check-circle';
-        }
+    function showSuccess(message) {
+        const statusMsg = document.getElementById("statusMessage");
+        statusMsg.classList.add("show", "success");
+        statusMsg.classList.remove("error");
+        document.getElementById("statusText").textContent = message;
+        document.getElementById("modalFooter").classList.add("show");
+        const icon = statusMsg.querySelector("i");
+        icon.className = "fas fa-check-circle";
+    }
 
-        function showError(message) {
-            var statusMsg = document.getElementById('statusMessage');
-            statusMsg.classList.add('show', 'error');
-            statusMsg.classList.remove('success');
-            document.getElementById('statusText').textContent = message;
-            document.getElementById('modalFooter').classList.add('show');
-            
-            var icon = statusMsg.querySelector('i');
-            icon.className = 'fas fa-exclamation-circle';
-        }
+    function showError(message) {
+        const statusMsg = document.getElementById("statusMessage");
+        statusMsg.classList.add("show", "error");
+        statusMsg.classList.remove("success");
+        document.getElementById("statusText").textContent = message;
+        document.getElementById("modalFooter").classList.add("show");
+        const icon = statusMsg.querySelector("i");
+        icon.className = "fas fa-exclamation-circle";
+    }
 
-        function refreshMods() {
-            if (isRefreshing) return;
-            
-            isRefreshing = true;
-            var refreshBtn = document.getElementById('refreshBtn');
-            refreshBtn.classList.add('loading');
-            refreshBtn.disabled = true;
-            
-            console.log('REFRESH_MODS');
-            
-            loadMods();
-        }
+    function refreshMods() {
+        if (isRefreshing) return;
+        isRefreshing = true;
 
-        function loadMods() {
-            fetch(MODS_JSON + '?t=' + Date.now())
-                .then(res => {
-                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                    return res.json();
-                })
-                .then(data => {
-                    console.log('JSON загружен:', data);
-                    var modsArray = Array.isArray(data) ? data : (data.mods || []);
-                    if (modsArray.length > 0) {
-                        renderMods(modsArray);
-                    } else {
-                        throw new Error('Моды не найдены в JSON');
-                    }
-                })
-                .catch(err => {
-                    console.error('Ошибка:', err);
-                    document.getElementById('grid').innerHTML = 
-                        `<div class="error">
-                            <i class="fas fa-exclamation-triangle"></i> 
-                            Ошибка загрузки: ${err.message}
-                        </div>`;
-                })
-                .finally(() => {
-                    isRefreshing = false;
-                    var refreshBtn = document.getElementById('refreshBtn');
-                    refreshBtn.classList.remove('loading');
-                    refreshBtn.disabled = false;
-                });
-        }
+        const refreshBtn = document.getElementById("refreshBtn");
+        refreshBtn.classList.add("loading");
+        refreshBtn.disabled = true;
 
-        function renderMods(mods) {
-            var grid = document.getElementById('grid');
-            grid.innerHTML = '';
-
-            if (mods.length === 0) {
-                grid.innerHTML = '<div class="loading">Моды не найдены</div>';
-                return;
-            }
-
-            mods.forEach(function(mod) {
-                var fileUrl = mod.file || mod.dataFile;
-                var imageUrl = mod.image || mod.preview;
-                
-                var dataFileUrl = fileUrl.startsWith('http') ? fileUrl : REPO_ROOT + fileUrl;
-                var previewUrl = imageUrl.startsWith('http') ? imageUrl : REPO_ROOT + imageUrl;
-
-                var card = document.createElement('div');
-                card.className = 'mod-card';
-                card.innerHTML = `
-                    <img src="${previewUrl}" 
-                         class="mod-img" 
-                         alt="${mod.name}"
-                         onerror="this.src='https://via.placeholder.com/300x170/1a2028/8bb6db?text=No+Preview'">
-                    <div class="mod-body">
-                        <div class="mod-title">${mod.name}</div>
-                        <div class="mod-author">
-                            <i class="fas fa-user"></i>
-                            ${mod.author || 'Неизвестен'}
-                        </div>
-                        <div class="mod-desc">${mod.description || 'Нет описания'}</div>
-                        <button class="btn" onclick="install('${dataFileUrl}', '${mod.name}')">
-                            <i class="fas fa-download"></i> УСТАНОВИТЬ
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-
-            console.log(`Отрендерено ${mods.length} модов`);
-        }
-
-        function install(url, name) {
-            console.log('INSTALL_MOD:' + url);
-        }
-
-        function browseGamePath() {
-            console.log('BROWSE_PATH');
-        }
-
-        function updateConnectionStatus(connected, gamePath) {
-            var statusPulse = document.getElementById('statusPulse');
-            var statusText = document.getElementById('statusText');
-            
-            if (connected && gamePath) {
-                statusPulse.classList.remove('disconnected');
-                statusText.textContent = 'Соединение установлено';
-                statusText.classList.add('connected');
-                statusText.classList.remove('disconnected');
-            } else if (connected) {
-                statusPulse.classList.remove('disconnected');
-                statusText.textContent = 'Поиск игры...';
-                statusText.classList.remove('connected', 'disconnected');
-            } else {
-                statusPulse.classList.add('disconnected');
-                statusText.textContent = 'Нет соединения';
-                statusText.classList.add('disconnected');
-                statusText.classList.remove('connected');
-            }
-        }
-
-        function updateGameStatus(found, path) {
-            updateConnectionStatus(found, path);
-        }
-
-        function setInstallMethod(method) {
-            selectedInstallMethod = method;
-            console.log('SET_INSTALL_METHOD:' + method);
-        }
-
-
-        // При загрузке страницы проверим, какой метод был установлен ранее
-        window.onload = function() {
-            console.log('PAGE_LOADED');
-        };
-
+        console.log("REFRESH_MODS");
         loadMods();
-    </script>
+    }
+
+    function loadMods() {
+        fetch(MODS_JSON + "?t=" + Date.now())
+            .then(res => {
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                return res.json();
+            })
+            .then(data => {
+                const modsArray = Array.isArray(data) ? data : data.mods;
+                if (modsArray && modsArray.length > 0) {
+                    renderMods(modsArray);
+                } else {
+                    throw new Error("Пустой JSON mods.json");
+                }
+            })
+            .catch(err => {
+                console.error("Ошибка загрузки mods.json:", err);
+                document.getElementById("grid").innerHTML =
+                    '<div class="error"><i class="fas fa-exclamation-triangle"></i> ' +
+                    (err.message || "Не удалось загрузить список модов") +
+                    '</div>';
+            })
+            .finally(() => {
+                isRefreshing = false;
+                const refreshBtn = document.getElementById("refreshBtn");
+                refreshBtn.classList.remove("loading");
+                refreshBtn.disabled = false;
+            });
+    }
+
+    function renderMods(mods) {
+        const grid = document.getElementById("grid");
+        grid.innerHTML = "";
+
+        if (!mods.length) {
+            grid.innerHTML = '<div class="loading">Список модов пуст.</div>';
+            return;
+        }
+
+        mods.forEach(mod => {
+            const fileUrl = mod.file || mod.dataFile;
+            const imageUrl = mod.image || mod.preview;
+
+            const dataFileUrl = fileUrl
+                ? (fileUrl.startsWith("http") ? fileUrl : REPO_ROOT + fileUrl)
+                : "";
+
+            const previewUrl = imageUrl
+                ? (imageUrl.startsWith("http") ? imageUrl : REPO_ROOT + imageUrl)
+                : "https://via.placeholder.com/300x170/1a2028/8bb6db?text=No+Preview";
+
+            const card = document.createElement("div");
+            card.className = "mod-card";
+            card.innerHTML = `
+                <img src="${previewUrl}" class="mod-img" alt="${mod.name || ""}"
+                     onerror="this.src='https://via.placeholder.com/300x170/1a2028/8bb6db?text=No+Preview'">
+                <div class="mod-body">
+                    <div class="mod-title">${mod.name || "Без названия"}</div>
+                    <div class="mod-author">
+                        <i class="fas fa-user"></i>
+                        ${mod.author || "Неизвестный автор"}
+                    </div>
+                    <div class="mod-desc">${mod.description || "Нет описания."}</div>
+                    <button class="btn" onclick="install('${dataFileUrl}', '${(mod.name || "").replace(/'/g, "\\'")}')">
+                        <i class="fas fa-download"></i>
+                        Установить
+                    </button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        console.log("Загружено модов:", mods.length);
+    }
+
+    function install(url, name) {
+        if (!url) {
+            console.warn("Нет URL для установки мода");
+            return;
+        }
+        console.log("INSTALL_MOD:" + url);
+        // также сообщим, какой метод установки выбран
+        console.log("INSTALL_METHOD:" + currentInstallMethod);
+        showModal();
+
+        if (window.install && typeof window.install === "function") {
+            window.install(url, name || "");
+        }
+    }
+
+    function browseGamePath() {
+        console.log("BROWSE_PATH");
+        if (window.browseGamePath && typeof window.browseGamePath === "function") {
+            window.browseGamePath();
+        }
+    }
+
+    function updateConnectionStatus(connected, gamePath) {
+        const statusPulse = document.getElementById("statusPulse");
+        const statusText = document.getElementById("statusText");
+        if (!statusPulse || !statusText) return;
+
+        if (connected) {
+            statusPulse.classList.remove("disconnected");
+            statusText.classList.add("connected");
+            statusText.classList.remove("disconnected");
+            statusText.textContent = gamePath ? "Игра найдена" : "Соединение с лаунчером";
+        } else {
+            statusPulse.classList.add("disconnected");
+            statusText.classList.add("disconnected");
+            statusText.classList.remove("connected");
+            statusText.textContent = "Нет соединения с лаунчером";
+        }
+    }
+
+    function updateGameStatus(found, path) {
+        updateConnectionStatus(found, path || "");
+        const input = document.getElementById("game-path-input");
+        if (input) input.value = path || "";
+    }
+
+    // Методы установки
+
+    function updateInstallMethodUI() {
+        const sdlsBtn = document.getElementById("installMethodSdls");
+        const dataBtn = document.getElementById("installMethodData");
+        const label = document.getElementById("installMethodLabel");
+        if (!sdlsBtn || !dataBtn || !label) return;
+
+        sdlsBtn.classList.toggle("active", currentInstallMethod === "sdls");
+        dataBtn.classList.toggle("active", currentInstallMethod === "data");
+
+        if (currentInstallMethod === "sdls") {
+            label.textContent = "sDLS — Документы / packs";
+        } else {
+            label.textContent = "Data — папка Data рядом с tanksblitz.exe";
+        }
+    }
+
+    function setInstallMethod(method) {
+        currentInstallMethod = method === "data" ? "data" : "sdls";
+        localStorage.setItem("installMethod", currentInstallMethod);
+        updateInstallMethodUI();
+        console.log("INSTALL_METHOD:" + currentInstallMethod);
+    }
+
+    function initInstallMethod() {
+        const stored = localStorage.getItem("installMethod");
+        currentInstallMethod = stored === "data" ? "data" : "sdls";
+        updateInstallMethodUI();
+        console.log("INSTALL_METHOD:" + currentInstallMethod);
+    }
+
+    // Инициализация
+    window.addEventListener("load", function () {
+        initInstallMethod();
+        loadMods();
+    });
+</script>
 </body>
 </html>
-
