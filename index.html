@@ -790,7 +790,6 @@
                 ASSTRALLITY LOADER — Универсальный установщик модов с поддержкой бэкапа и контроля актуальной версии игры.
             </p>
 
-            <!-- Блок обновления лаунчера -->
             <h3 class="info-title" style="margin-top: 10px;">Обновление лаунчера</h3>
             <p class="info-text">
                 Проверка и установка новой версии выполняется самим лаунчером. Нажмите кнопку ниже, чтобы запросить обновление.
@@ -805,7 +804,7 @@
 
 <input type="text" id="game-path-input" readonly>
 
-<!-- Модалка -->
+<!-- Модалка установки модов -->
 <div id="installModal" class="modal-overlay">
     <div class="modal-dialog">
         <div class="modal-header">
@@ -831,6 +830,36 @@
         </div>
         <div class="modal-footer" id="modalFooter">
             <button class="modal-btn" onclick="closeModal()">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- Отдельная модалка обновления лаунчера -->
+<div id="updateModal" class="modal-overlay">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <i class="fas fa-arrow-circle-up"></i>
+            <div class="modal-title">Обновление лаунчера</div>
+            <button class="modal-close" onclick="closeUpdateModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="updateModalMessage" class="modal-message">
+                Подготовка к загрузке обновления...
+            </div>
+            <div class="progress-container">
+                <div id="updateProgressBar" class="progress-bar"></div>
+            </div>
+            <div id="updateProgressText" class="progress-text">0%</div>
+
+            <div id="updateStatusMessage" class="status-message">
+                <i class="fas fa-check-circle"></i>
+                <span id="updateModalStatusText"></span>
+            </div>
+        </div>
+        <div class="modal-footer" id="updateModalFooter">
+            <button class="modal-btn" onclick="closeUpdateModal()">Закрыть</button>
         </div>
     </div>
 </div>
@@ -864,6 +893,7 @@
         });
     }
 
+    // ---- Модалка установки модов ----
     function showModal() {
         document.getElementById("installModal").classList.add("show");
         resetModal();
@@ -905,6 +935,57 @@
         statusMsg.classList.remove("success");
         document.getElementById("modalStatusText").textContent = message;
         document.getElementById("modalFooter").classList.add("show");
+        const icon = statusMsg.querySelector("i");
+        icon.className = "fas fa-exclamation-circle";
+    }
+
+    // ---- Отдельная модалка обновления лаунчера ----
+
+    function showUpdateModal() {
+        const overlay = document.getElementById("updateModal");
+        const bar = document.getElementById("updateProgressBar");
+        const text = document.getElementById("updateProgressText");
+        const msg = document.getElementById("updateModalMessage");
+        const status = document.getElementById("updateStatusMessage");
+        const footer = document.getElementById("updateModalFooter");
+
+        bar.style.width = "0%";
+        text.textContent = "0%";
+        msg.textContent = "Подготовка к загрузке обновления...";
+        status.classList.remove("show", "success", "error");
+        footer.classList.remove("show");
+
+        overlay.classList.add("show");
+    }
+
+    function closeUpdateModal() {
+        document.getElementById("updateModal").classList.remove("show");
+    }
+
+    function updateUpdateProgress(percent, message) {
+        document.getElementById("updateProgressBar").style.width = percent + "%";
+        document.getElementById("updateProgressText").textContent = percent + "%";
+        if (message) {
+            document.getElementById("updateModalMessage").textContent = message;
+        }
+    }
+
+    function showUpdateSuccess(message) {
+        const statusMsg = document.getElementById("updateStatusMessage");
+        statusMsg.classList.add("show", "success");
+        statusMsg.classList.remove("error");
+        document.getElementById("updateModalStatusText").textContent = message;
+        document.getElementById("updateModalFooter").classList.add("show");
+        const icon = statusMsg.querySelector("i");
+        icon.className = "fas fa-check-circle";
+    }
+
+    function showUpdateError(message) {
+        const statusMsg = document.getElementById("updateStatusMessage");
+        statusMsg.classList.add("show", "error");
+        statusMsg.classList.remove("success");
+        document.getElementById("updateModalStatusText").textContent = message;
+        document.getElementById("updateModalFooter").classList.add("show");
         const icon = statusMsg.querySelector("i");
         icon.className = "fas fa-exclamation-circle";
     }
