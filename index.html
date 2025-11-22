@@ -23,6 +23,40 @@
             user-select: none;
         }
 
+        /* Плавный снег */
+
+        .snow-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .snowflake {
+            position: absolute;
+            color: rgba(139, 182, 219, 0.28);
+            font-size: 10px;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-10px) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.35;
+            }
+            90% {
+                opacity: 0.35;
+            }
+            100% {
+                transform: translateY(100vh) translateX(25px);
+                opacity: 0;
+            }
+        }
+
         .sidebar {
             width: 260px;
             background: linear-gradient(180deg, #151a21 0%, #0f1419 100%);
@@ -32,32 +66,7 @@
             border-right: 1px solid rgba(139, 182, 219, 0.15);
             box-shadow: 2px 0 20px rgba(0, 0, 0, 0.4);
             position: relative;
-        }
-
-        .snowflake {
-            position: absolute;
-            color: rgba(139, 182, 219, 0.3);
-            font-size: 10px;
-            animation: snowfall linear infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        @keyframes snowfall {
-            0% {
-                transform: translateY(-10px) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.3;
-            }
-            90% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(100vh) translateX(20px);
-                opacity: 0;
-            }
+            z-index: 1;
         }
 
         .logo {
@@ -126,21 +135,7 @@
             overflow-y: auto;
             background: linear-gradient(135deg, #0f1419 0%, #151a21 100%);
             position: relative;
-        }
-
-        .content-snow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .content-snow .snowflake {
-            font-size: 12px;
+            z-index: 1;
         }
 
         .content::-webkit-scrollbar {
@@ -323,19 +318,19 @@
         }
 
         .settings-section {
-            background: radial-gradient(circle at top left, rgba(139, 182, 219, 0.08), rgba(21, 26, 33, 0.85));
+            background: rgba(21, 26, 33, 0.75);
             backdrop-filter: blur(10px);
             border-radius: 12px;
-            padding: 25px;
+            padding: 22px 24px 20px;
             margin-bottom: 20px;
-            border: 1px solid rgba(139, 182, 219, 0.18);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(139, 182, 219, 0.16);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
         }
 
         .settings-section h3 {
             font-family: "Rajdhani", sans-serif;
             font-size: 22px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             color: #e8f4fa;
             display: flex;
             align-items: center;
@@ -347,36 +342,88 @@
         }
 
         .setting-item {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .setting-item label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #c1cfdd;
             font-size: 14px;
         }
 
-        .info-section {
-            background: rgba(21, 26, 33, 0.4);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(139, 182, 219, 0.1);
-            line-height: 1.8;
+        /* Новый дизайн методов установки: два плоских переключателя */
+
+        .install-methods {
+            display: flex;
+            gap: 10px;
         }
 
-        .info-section h3 {
+        .install-method-pill {
+            flex: 1 1 0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            border: 1px solid rgba(139, 182, 219, 0.22);
+            background: rgba(13, 17, 23, 0.9);
+            color: #a0b0c0;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .install-method-pill:hover {
+            border-color: rgba(139, 182, 219, 0.45);
+            background: rgba(18, 24, 33, 0.96);
+        }
+
+        .install-method-pill.active {
+            border-color: #8bb6db;
+            background: linear-gradient(135deg, rgba(139, 182, 219, 0.18) 0%, rgba(20, 26, 35, 0.98) 100%);
+            box-shadow: 0 0 0 1px rgba(139, 182, 219, 0.5), 0 8px 22px rgba(0, 0, 0, 0.7);
+        }
+
+        .install-method-title {
+            font-size: 14px;
+            color: #e8f4fa;
+            font-weight: 600;
+        }
+
+        .install-method-desc {
+            font-size: 12px;
+            color: #c1cfdd;
+        }
+
+        .install-method-note {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #a0b0c0;
+        }
+
+        /* Информация — простое окно */
+
+        .info-section {
+            background: rgba(21, 26, 33, 0.86);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 22px 24px 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(139, 182, 219, 0.16);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+        }
+
+        .info-title {
             font-family: "Rajdhani", sans-serif;
             font-size: 22px;
-            margin-bottom: 15px;
+            margin: 0 0 10px 0;
             color: #e8f4fa;
         }
 
-        .info-section p {
-            color: #a0b0c0;
-            margin-bottom: 15px;
+        .info-text {
+            margin: 0;
+            font-size: 14px;
+            color: #c1cfdd;
         }
 
         .status-box {
@@ -647,88 +694,27 @@
             transform: translateY(-2px);
         }
 
-        /* Методы установки — слегка освежённый вид */
-
-        .install-methods {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .install-method-btn {
-            position: relative;
-            flex: 1 1 0;
-            padding: 14px 16px;
-            background: radial-gradient(circle at top left, rgba(139, 182, 219, 0.12), rgba(15, 20, 25, 0.95));
-            border: 1px solid rgba(139, 182, 219, 0.25);
-            border-radius: 10px;
-            color: #a0b0c0;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 6px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            font-size: 13px;
-            overflow: hidden;
-        }
-
-        .install-method-btn::before {
-            content: "";
-            position: absolute;
-            inset: -40%;
-            background: radial-gradient(circle at top, rgba(139, 182, 219, 0.22), transparent 55%);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-        }
-
-        .install-method-btn:hover::before {
-            opacity: 1;
-        }
-
-        .install-method-btn:hover {
-            transform: translateY(-1px);
-            border-color: rgba(139, 182, 219, 0.45);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
-        }
-
-        .install-method-btn.active {
-            border-color: #8bb6db;
-            box-shadow: 0 0 0 1px rgba(139, 182, 219, 0.6), 0 10px 26px rgba(0, 0, 0, 0.7);
-            background: radial-gradient(circle at top, rgba(139, 182, 219, 0.24), rgba(15, 20, 25, 0.98));
-        }
-
-        .install-method-btn .method-title {
-            font-weight: 600;
-            color: #e8f4fa;
-            font-size: 14px;
-        }
-
-        .install-method-btn .method-desc {
-            font-size: 12px;
-            color: #c1cfdd;
-        }
-
-        .install-method-note {
-            margin-top: 10px;
-            font-size: 13px;
-            color: #a0b0c0;
-        }
-
         #game-path-input {
             display: none;
         }
     </style>
 </head>
 <body>
-<div class="sidebar">
-    <div class="snowflake" style="left: 10%; animation-duration: 15s; animation-delay: 0s;">*</div>
-    <div class="snowflake" style="left: 30%; animation-duration: 18s; animation-delay: 2s;">*</div>
-    <div class="snowflake" style="left: 50%; animation-duration: 20s; animation-delay: 4s;">*</div>
-    <div class="snowflake" style="left: 70%; animation-duration: 16s; animation-delay: 6s;">*</div>
-    <div class="snowflake" style="left: 85%; animation-duration: 19s; animation-delay: 8s;">*</div>
+<!-- Снег поверх всего сайта -->
+<div class="snow-layer">
+    <div class="snowflake" style="left: 5%;  animation-duration: 20s; animation-delay: 0s;">✶</div>
+    <div class="snowflake" style="left: 15%; animation-duration: 24s; animation-delay: 2s;">✻</div>
+    <div class="snowflake" style="left: 25%; animation-duration: 22s; animation-delay: 4s;">✼</div>
+    <div class="snowflake" style="left: 35%; animation-duration: 26s; animation-delay: 1s;">✶</div>
+    <div class="snowflake" style="left: 45%; animation-duration: 21s; animation-delay: 3s;">✻</div>
+    <div class="snowflake" style="left: 55%; animation-duration: 25s; animation-delay: 5s;">✼</div>
+    <div class="snowflake" style="left: 65%; animation-duration: 23s; animation-delay: 6s;">✶</div>
+    <div class="snowflake" style="left: 75%; animation-duration: 27s; animation-delay: 2s;">✻</div>
+    <div class="snowflake" style="left: 85%; animation-duration: 22s; animation-delay: 7s;">✼</div>
+    <div class="snowflake" style="left: 95%; animation-duration: 24s; animation-delay: 4s;">✶</div>
+</div>
 
+<div class="sidebar">
     <div class="logo">
         <i class="fas fa-cube"></i>
         ASSTRALLITY
@@ -760,19 +746,6 @@
 </div>
 
 <div class="content">
-    <div class="content-snow">
-        <div class="snowflake" style="left: 5%; animation-duration: 17s; animation-delay: 0s;">*</div>
-        <div class="snowflake" style="left: 15%; animation-duration: 22s; animation-delay: 1s;">*</div>
-        <div class="snowflake" style="left: 25%; animation-duration: 19s; animation-delay: 3s;">*</div>
-        <div class="snowflake" style="left: 35%; animation-duration: 21s; animation-delay: 2s;">*</div>
-        <div class="snowflake" style="left: 45%; animation-duration: 18s; animation-delay: 5s;">*</div>
-        <div class="snowflake" style="left: 55%; animation-duration: 20s; animation-delay: 4s;">*</div>
-        <div class="snowflake" style="left: 65%; animation-duration: 23s; animation-delay: 6s;">*</div>
-        <div class="snowflake" style="left: 75%; animation-duration: 16s; animation-delay: 7s;">*</div>
-        <div class="snowflake" style="left: 85%; animation-duration: 19s; animation-delay: 2s;">*</div>
-        <div class="snowflake" style="left: 95%; animation-duration: 21s; animation-delay: 8s;">*</div>
-    </div>
-
     <!-- Моды -->
     <div id="tab-mods" class="tab-content active">
         <div class="content-header">
@@ -796,20 +769,14 @@
             <div class="setting-item">
                 <label>Куда устанавливать моды</label>
                 <div class="install-methods">
-                    <button type="button"
-                            class="install-method-btn"
-                            id="installMethodSdls"
-                            onclick="setInstallMethod('sdls')">
-                        <span class="method-title">sDLS</span>
-                        <span class="method-desc">Документы / папка <code>packs</code></span>
-                    </button>
-                    <button type="button"
-                            class="install-method-btn"
-                            id="installMethodData"
-                            onclick="setInstallMethod('data')">
-                        <span class="method-title">Data</span>
-                        <span class="method-desc">Папка <code>Data</code> рядом с <code>tanksblitz.exe</code></span>
-                    </button>
+                    <div class="install-method-pill" id="installMethodSdls" onclick="setInstallMethod('sdls')">
+                        <div class="install-method-title">sDLS</div>
+                        <div class="install-method-desc">Документы / папка <code>packs</code></div>
+                    </div>
+                    <div class="install-method-pill" id="installMethodData" onclick="setInstallMethod('data')">
+                        <div class="install-method-title">Data</div>
+                        <div class="install-method-desc">Папка <code>Data</code> рядом с <code>tanksblitz.exe</code></div>
+                    </div>
                 </div>
                 <p class="install-method-note">
                     Текущий метод: <span id="installMethodLabel"></span>
@@ -823,20 +790,9 @@
         <h2 style="margin-bottom: 25px;">ИНФОРМАЦИЯ</h2>
 
         <div class="info-section">
-            <h3>О программе</h3>
-            <p><strong>Asstrallity Mods Loader</strong> — удобный загрузчик модов для World of Tanks Blitz с современным интерфейсом.</p>
-            <h3>Как использовать?</h3>
-            <p>
-                1. Программа автоматически найдет папку игры.<br>
-                2. Выберите нужный мод во вкладке «Моды».<br>
-                3. Нажмите кнопку «Установить».<br>
-                4. Мод будет автоматически скачан и установлен.
-            </p>
-            <h3>Требования</h3>
-            <p>
-                Windows 10/11<br>
-                World of Tanks Blitz<br>
-                Интернет соединение
+            <h3 class="info-title">О программе</h3>
+            <p class="info-text">
+                ASSTRALLITY LOADER — Универсальный установщик модов с поддержкой бэкапа и контроля актуальной версии игры.
             </p>
         </div>
     </div>
@@ -1085,13 +1041,13 @@
     }
 
     function updateInstallMethodUI() {
-        const sdlsBtn = document.getElementById("installMethodSdls");
-        const dataBtn = document.getElementById("installMethodData");
+        const sdlsPill = document.getElementById("installMethodSdls");
+        const dataPill = document.getElementById("installMethodData");
         const label = document.getElementById("installMethodLabel");
-        if (!sdlsBtn || !dataBtn || !label) return;
+        if (!sdlsPill || !dataPill || !label) return;
 
-        sdlsBtn.classList.toggle("active", currentInstallMethod === "sdls");
-        dataBtn.classList.toggle("active", currentInstallMethod === "data");
+        sdlsPill.classList.toggle("active", currentInstallMethod === "sdls");
+        dataPill.classList.toggle("active", currentInstallMethod === "data");
 
         if (currentInstallMethod === "sdls") {
             label.textContent = "sDLS — Документы / packs";
